@@ -1,0 +1,4 @@
+pdf/
+Pipfile
+Pipfile.lock
+pdfminer.six
