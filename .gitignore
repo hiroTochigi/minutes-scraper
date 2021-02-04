@@ -2,3 +2,4 @@ pdf/
 Pipfile
 Pipfile.lock
 pdfminer.six
+stat_finish/texted-pdf/
