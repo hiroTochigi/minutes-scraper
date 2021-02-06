@@ -59,6 +59,13 @@ def download_pdf_and_save(url, save_name, failed_url_and_file_name):
         failed_url_and_file_name.append([url, save_name])
         return failed_url_and_file_name
 
+def get_pdf_directory_path(store_file_path):
+
+    if os.path.isdir(store_file_path):
+        return store_file_path
+    else:
+        os.mkdir(store_file_path)
+        return store_file_path
 
 def get_downloaded_paths(store_file_path):
 
@@ -68,27 +75,31 @@ def get_downloaded_paths(store_file_path):
             file_path_list.append(os.path.join(root, name))
     return file_path_list
 
-pre_file_path = f"http://cambridgema.iqm2.com/Citizens/"
-store_file_path = f"{os.getcwd()}/pdf/"
+def main():
 
-with open("page", "r") as r:
-    text_line  = r.readlines()
-    file_name_and_file_path_set = [text for text in text_line if find_target_text(text)]
+    pre_file_path = f"http://cambridgema.iqm2.com/Citizens/"
+    store_file_path = get_pdf_directory_path(f"{os.getcwd()}/pdf/")
 
-trim_file_name_and_file_path_set = drop_empty_href_and_corresponding_name(file_name_and_file_path_set)
-file_path_list = get_downloaded_paths(store_file_path)
-failed_url_and_file_name = []
+    with open("page", "r") as r:
+        text_line  = r.readlines()
+        file_name_and_file_path_set = [text for text in text_line if find_target_text(text)]
 
-for file_name_and_file_path in trim_file_name_and_file_path_set:
-    time.sleep(10)
-    meeting_name = get_meeting_name(file_name_and_file_path[0])
-    file_path = get_file_path(file_name_and_file_path[1])
-    abs_file_url = f"{pre_file_path}{file_path}"
-    abs_file_name = f"{store_file_path}{meeting_name}.pdf"
-    if not abs_file_name in file_path_list:
-        print(f"download and save {abs_file_name}")
-        failed_url_and_file_name = download_pdf_and_save(abs_file_url, abs_file_name, failed_url_and_file_name)
+    trim_file_name_and_file_path_set = drop_empty_href_and_corresponding_name(file_name_and_file_path_set)
+    file_path_list = get_downloaded_paths(store_file_path)
+    failed_url_and_file_name = []
 
-with open(f'{pre_file_path}failed_list', "w") as w:
-    w.write(json.loads(failed_url_and_file_name))
+    for file_name_and_file_path in trim_file_name_and_file_path_set:
+        time.sleep(10)
+        meeting_name = get_meeting_name(file_name_and_file_path[0])
+        file_path = get_file_path(file_name_and_file_path[1])
+        abs_file_url = f"{pre_file_path}{file_path}"
+        abs_file_name = f"{store_file_path}{meeting_name}.pdf"
+        if not abs_file_name in file_path_list:
+            print(f"download and save {abs_file_name}")
+            failed_url_and_file_name = download_pdf_and_save(abs_file_url, abs_file_name, failed_url_and_file_name)
 
+    with open(f'{pre_file_path}failed_list', "w") as w:
+        w.write(json.loads(failed_url_and_file_name))
+
+if __name__ == '__main__':
+    main()
