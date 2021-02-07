@@ -5,12 +5,43 @@ import os
 import re
 
 from common_process import process_files
+from get_street_list_in_each_sentence import get_street_list_in_each_sentence 
+
+class SaveData:
+    dataset = {}
+    
+    @classmethod
+    def save_data(cls, file_name, data):
+        cls.dataset[file_name] = data
+        with open("classify_region.json", "w") as w:
+            w.write(json.dumps(cls.dataset[file_name]))
+    
+    @classmethod
+    def load_data(cls):
+        with open("classify_region.json", "r") as r:
+            cls.dataset = json.loads(r.read())
+
 
 def print_answer(answer):
     if len(answer) == 0:
        pass
     else: 
         print(f"you choice {answer}")
+
+def get_choice_num(choice_list):
+    if len(choice_list) == 0:
+        return f"No more choice\n"
+    if len(choice_list) == 1:
+        return f"Only one choice\n"
+    else:
+        return f"Enter number: 0-{len(choice_list)-1}\n"
+
+def evaluate_choices(sentence, answer):
+    print(f"answer:{answer}")
+    print(sentence["choice"])
+    print([each_choice in answer for each_choice in sentence["choice"]])
+    print(all([each_choice in answer for each_choice in sentence["choice"]]))
+    return all([each_choice in answer for each_choice in sentence["choice"]])
 
 def get_region_contain_sentences(
         read_file,
@@ -21,61 +52,45 @@ def get_region_contain_sentences(
         street_name_list
     ):
 
-    word_set = set()
-    word_list_list = []
-    with open(f'{input_dir}/{read_file}', "r") as r:
-        text = r.readlines()
-        for sentence in text:
-                temp_words = sentence.split(" ")
-                temp_words = [word.replace("\r", "").replace("\n", "") for word in temp_words if len(word)]
-                if temp_words:
-                    for word in temp_words:
-                        word_set.add(word)
-                    word_list_list.append(temp_words)
-                    
-        word_list = list(word_set)
-        street_name_candidate_list = [word for word in word_list if word in street_name_list ]
-
-        street_list_in_each_sentence = []
-        for sentence in text:
-            temp_words = sentence.split(" ")
-            street_list = [word for word in temp_words if word in street_name_candidate_list]
-            sentence_and_choice = {
-                "sentence":sentence,
-                "choice":street_list
-            }
-            street_list_in_each_sentence.append(sentence_and_choice)
+    street_list_in_each_sentence = get_street_list_in_each_sentence(
+            file_path=f'{input_dir}/{read_file}',
+            street_list=street_list,
+            street_name_list=street_name_list
+        )
+    answer_list = []
     for sentence in street_list_in_each_sentence:
         print(sentence["sentence"])
         choice = sentence["choice"]
         answer = []
         val = 0
-        while val != "n":
-            
-            print_answer(answer)
-            [ print(f"{index}:{choice}") for index, choice in enumerate(choice)]
-            val = input(
-                    f"Enter number: 0-{len(choice)-1}\n" 
-                    "next sentence for n\n"
-                    "repeat sentence for r\n" 
-                    "undo choice for u\n"
-                )
-            if val.isnumeric():
-                val = int(val)
-                if val >= len(choice):
-                    print("Wrong value")
-                else:
-                    answer.append(choice.pop(val))
-            elif val == "r":
-                print(sentence["sentence"])
-            elif val == "u":
-                if len(answer) > 0:
-                    choice.append(answer.pop())
-                else:
-                    print("No answer")
+        if not evaluate_choices(sentence, answer_list):
+            while val != "n":
+                
+                print_answer(answer)
+                [ print(f"{index}:{choice}") for index, choice in enumerate(choice)]
+                val = input(
+                        f"{get_choice_num(choice)}" 
+                        "next sentence for n\n"
+                        "repeat sentence for r\n" 
+                        "undo choice for u\n"
+                    )
+                if val.isnumeric():
+                    val = int(val)
+                    if val >= len(choice):
+                        print("Wrong value")
+                    else:
+                        answer.append(choice.pop(val))
+                elif val == "r":
+                    print(sentence["sentence"])
+                elif val == "u":
+                    if len(answer) > 0:
+                        choice.append(answer.pop())
+                    else:
+                        print("No answer")
 
-
-            print()
+                print()
+            answer_list.extend(answer)
+    SaveData.save_data(read_file, answer_list)
 
     """
     with open(f'{output_dir}/{write_file}', "w") as w:
