@@ -5,12 +5,10 @@ Scrape all street names of Cambridge, MA from all minutes of City of Cambridge
 
 ## How to use
 1. Download all minutes
-
-Execute download_minutes.py at root directory (/minutes-scraper/download_minutes.py)
-
-    1. The script makes pdf directory (/minutes-scraper/pdf) first.
-    2. Download all minutes in the pdf directory.
-    3. Change each minute name [week], [month] [day], [year], [time] [name of meeting].pdf For example, FRIDAY, OCTOBER 2, 2020 11:00 AM Community Benefits Advisory Committee Regular Meeting.pdf 
+    1. Execute download_minutes.py at root directory (/minutes-scraper/download_minutes.py)
+        1. The script makes pdf directory (/minutes-scraper/pdf) first.
+        2. Download all minutes in the pdf directory.
+        3. Change each minute name [week], [month] [day], [year], [time] [name of meeting].pdf For example, FRIDAY, OCTOBER 2, 2020 11:00 AM Community Benefits Advisory Committee Regular Meeting.pdf 
 
 
 2. Convert PDF to Text
