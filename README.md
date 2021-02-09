@@ -27,7 +27,7 @@ Scrape all street names of Cambridge, MA from all minutes of City of Cambridge
 ## Associate the street names to each minutes
 I am developing a CLI tools.
 
-The main problem is that it is hard to programmatically distinguish the street name is associated with the topic of the meeting or the street name is the resident address of the participant of the meeting. A human can easily solve it. Therefore, the tool assists the human in accomplishing these tasks.
+The main problem is that it is hard to programmatically distinguish the street name is associated with the topic of the meeting or a resident address of the participant of the meeting. A human can easily solve it. Therefore, the tool assists the human in accomplishing these tasks.
 
 There is one point to assist.
 1. The tool prints the street name out in a different color.
