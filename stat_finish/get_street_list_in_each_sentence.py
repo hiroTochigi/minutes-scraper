@@ -1,6 +1,17 @@
 
 import itertools
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def get_street(target_street, street_list):
     return [street for street in street_list if street.find(target_street)>=0]
 
@@ -20,10 +31,19 @@ def get_word_list(file_path):
                         word_set.add(word)
     return list(word_set)
 
-def narrow_choice(sentence, choice):
-    print(choice)
-    print(sentence)
+def narrow_choice(sentence, choice_list):
+    for choice in choice_list:
+        first_word_choice = choice.split()[0]
+        first_word_match_start = sentence.find(first_word_choice)
+        start = sentence.find(choice)
+        if start > -1:
+            end = len(choice)
+            sentence = f"{sentence[:start-1]} {bcolors.OKBLUE}{sentence[start:start+end]}{bcolors.ENDC} {sentence[start+end+1:]}"
+        elif first_word_match_start > -1:
+            end = len(first_word_choice)
+            sentence = f"{sentence[:first_word_match_start-1]} {bcolors.HEADER}{sentence[first_word_match_start:first_word_match_start+end]}{bcolors.ENDC} {sentence[first_word_match_start+end+1:]}"
 
+    return sentence, choice_list
     
 def get_street_list_in_each_sentence(file_path, street_list, street_name_list):
 
@@ -55,7 +75,7 @@ def get_street_list_in_each_sentence(file_path, street_list, street_name_list):
             choice = list(itertools.chain.from_iterable(nested_street_list))
             choice.sort()
 
-            narrow_choice(sentence, choice)
+            sentence, choice = narrow_choice(sentence, choice)
 
             sentence_and_choice = {
                 "sentence":sentence,

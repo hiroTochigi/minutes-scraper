@@ -11,7 +11,8 @@ def get_region_contain_sentences(
         input_dir,
         output_dir,
         street_list,
-        street_name_list
+        street_name_list,
+        _ 
     ):
 
     word_set = set()

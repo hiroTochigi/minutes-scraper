@@ -34,7 +34,14 @@ def get_index_without_prefix(input_prefix):
         return 0
     return len(input_prefix)
 
-def process_files(function, output_prefix, input_dir_part, output_dir_part, input_prefix=None):
+def process_files(
+        function,
+        output_prefix,
+        input_dir_part,
+        output_dir_part,
+        input_prefix=None,
+        save_data_conf=None
+    ):
     CWD = os.getcwd()
     input_dir = f"{CWD}/{input_dir_part}"
     output_dir = f"{CWD}/{output_dir_part}"
@@ -50,5 +57,6 @@ def process_files(function, output_prefix, input_dir_part, output_dir_part, inpu
                 input_dir,
                 output_dir,
                 street_list,
-                street_name_list
+                street_name_list,
+                save_data_conf
             )
