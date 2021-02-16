@@ -9,6 +9,14 @@ import itertools
 import common_process
 import get_street_list_in_each_sentence 
 
+ALIAS = {
+    "Drive": "Dr",
+    "Square": "Sq",
+    "Street": "St",
+    "Avenue": "Ave",
+    "Road": "Rd"
+}
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -20,7 +28,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-class JsonIOControler:
+class JsonIOController:
     
     dataset = {}
     exclusive_list = []
@@ -63,6 +71,20 @@ class JsonIOControler:
             new_street_list_json["street_list"] = street_list
             w.write(json.dumps(new_street_list_json))
 
+def remove_alias(street_list_with_alias):
+    street_list = []
+    opposite_ALIAS = {val:key for key, val in ALIAS.items()}
+    for street in street_list_with_alias:
+        prefix = street.split()[-1]
+        alias = opposite_ALIAS.get(prefix, None)
+        if alias:
+            street_no_alias = ("".join([f"{st} " for st in street.split()[:-1]])
+                    + alias).strip()
+            street_list.append(street_no_alias)
+        else:
+            street_list.append(street.strip())
+    return list(set(street_list))
+
 def get_region_contain_sentences(
         read_file,
         write_file,
@@ -103,7 +125,7 @@ def get_region_contain_sentences(
                 print("--------------------------------------------")
                 print()
             
-            answer_list = sorted(list(set(answer_list)))
+            answer_list = sorted(remove_alias(answer_list))
             for answer in answer_list:
                 print(answer)
 
@@ -149,7 +171,7 @@ def get_region_contain_sentences(
         
 def main():
     try:
-        json_io_cont = JsonIOControler()
+        json_io_cont = JsonIOController()
         json_io_cont.load_data()
 
         common_process.process_files(
@@ -163,7 +185,6 @@ def main():
 
         json_io_cont.save_file()
     except KeyboardInterrupt:
-        pass
         json_io_cont.save_file()
     except Exception as ex:
         json_io_cont.save_file()

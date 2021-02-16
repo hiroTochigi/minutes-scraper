@@ -1,6 +1,14 @@
 
 import itertools
 
+ALIAS = {
+    "Drive": "Dr",
+    "Square": "Sq",
+    "Street": "St",
+    "Avenue": "Ave",
+    "Road": "Rd"
+}
+
 def get_street(target_street, street_list):
     return [street for street in street_list if street.find(target_street)>=0]
 
@@ -70,6 +78,20 @@ def get_street_candidate_list(street_name_candidate_list, street_list):
         ]
     return sorted(list(itertools.chain.from_iterable(nested_street_candidate_list)))
 
+def add_alias(incomplete_street_list):
+    street_list = []
+    for street in incomplete_street_list:
+        prefix = street.split()[-1]
+        alias = ALIAS.get(prefix, None) 
+        if alias:
+            street_list.append(
+                    "".join([f"{st} " for st in street.split()[:-1]])
+                    + alias
+                )
+        street_list.append(street)
+    return street_list
+
+
 def get_street_list_in_each_sentence(file_path, street_list, street_name_list):
 
     street_list_in_each_sentence = []
@@ -79,10 +101,12 @@ def get_street_list_in_each_sentence(file_path, street_list, street_name_list):
                 file_path,
                 street_name_list
             )
-        street_candidate_list = get_street_candidate_list(
+        incomplete_street_candidate_list = get_street_candidate_list(
                 street_name_candidate_list,
                 street_list
-            ) 
+            )
+        street_candidate_list = add_alias(incomplete_street_candidate_list)
+        street_list = add_alias(street_list)
 
         for sentence in r.readlines():
 
