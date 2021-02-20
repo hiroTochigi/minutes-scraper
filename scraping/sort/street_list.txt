@@ -1,0 +1,836 @@
+1st Street   2141
+1st Street   2142
+2nd Street   2141
+2nd Street   2142
+3rd Street   2141
+3rd Street   2142
+4th Street Place   2141
+5th Street   2141
+5th Street   2142
+6th Street   2141
+6th Street   2142
+7th Street   2141
+8th Street   2141
+Aberdeen Avenue   2138
+Aberdeen Court   2138
+Aberdeen Way   2138
+Acacia Street   2138
+Acorn Park   2140
+Acorn Park Drive   2140
+Acorn Street   2139
+Adams Terrace   2138
+Agassiz Street   2140
+Albany Street   2139
+Alberta Terrace   2140
+Alewife Brook Pkwy   2140
+Alewife Brook Pkwy   2138
+Alewife Center   2140
+Allen Street   2140
+Allston Street   2139
+Alpine Street   2138
+Ames Street   2142
+Ames Street   2139
+Amesbury Street   2139
+Amherst Street   2142
+Amherst Street   2139
+Amory Place   2139
+Amory Street   2139
+Andrew Street   2139
+Antrim Street   2139
+Appian Way   2138
+Appleton Road   2138
+Appleton Street   2138
+Appleton Terrace   2138
+Arcadia Street   2140
+Arlington Street   2140
+Arnold Circle   2139
+Arrow Street   2138
+Arsenal Square   2138
+Ash Street   2138
+Ash Street Place   2138
+Ashburton Place   2139
+Ashton Place   2138
+Athenaeum Street   2142
+Athens Street   2138
+Athens Terrace   2138
+Auburn Park   2139
+Auburn Street   2139
+Audrey Street   2139
+Austin Park   2139
+Avon Hill Street   2140
+Avon Place   2140
+Avon Street   2138
+Bacon Court   2141
+Baldwin Street Court   2138
+Ballord Place   2139
+Bancroft Street   2139
+Banks Street   2138
+Bates Street   2140
+Bay State Road   2138
+Bay Street   2139
+Beech Street   2140
+Bellevue Avenue   2140
+Bellis Circle   2138
+Bellis Circle   2140
+Bellis Court   2140
+Belmont Court   2140
+Belmont Street   2138
+Belvidere Place   2139
+Bennett Street   2138
+Bent Street   2141
+Berkeley Place   2138
+Berkeley Street   2138
+Berkshire Place   2141
+Berkshire Street   2141
+Bigelow Street   2139
+Binney Street   2139
+Binney Street   2142
+Birch Street   2138
+Bishop Richard Allen Drive   2139
+Blackstone Street   2139
+Blair Place   2140
+Blake Street   2140
+Blakeslee Street   2138
+Blanchard Road   2138
+Blanche Street   2139
+Boardman Place   2139
+Boardman Street   2139
+Bolton Street   2140
+Bond Street   2138
+Bow Street   2138
+Bowdoin Street   2138
+Boyle Terrace   2138
+Bradbury Street   2138
+Brattle Circle   2138
+Brattle Square   2138
+Brattle Street   2138
+Brewer Street   2138
+Brewster Street   2138
+Bristol Street   2139
+Bristol Street   2141
+Broadway   2142
+Broadway   2138
+Broadway   2139
+Broadway Court   2138
+Broadway Terrace   2139
+Brookford Street   2140
+Brookline Place   2139
+Brookline Street   2138
+Brookline Street   2139
+Brown Street   2138
+Bryant Street   2138
+Buckingham Place   2138
+Buckingham Street   2138
+Buena Vista Park   2140
+Cadbury Road   2140
+Callender Street   2139
+Cambridge Center   2142
+Cambridge Park Drive   2140
+Cambridge Pkwy   2142
+Cambridge Street   2141
+Cambridge Street   2138
+Cambridge Street   2139
+Cambridge Terrace   2140
+Cambridgepark Drive   2140
+Cambridgeside Place   2141
+Camden Place   2138
+Camelia Avenue   2139
+Cameron Avenue   2140
+Camp Street   2140
+Canal Park   2141
+Cardinal Medeiros Avenue   2141
+Carleton Street   2142
+Carlisle Street   2139
+Carver Street   2138
+Cedar Square   2140
+Cedar Street   2140
+Central Square   2139
+Centre Street   2139
+Chalk Street   2139
+Channing Circle   2138
+Channing Place   2138
+Channing Street   2138
+Chapman Place   2138
+Charles Street   2141
+Chatham Street   2139
+Chauncy Lane   2138
+Chauncy Street   2138
+Chauncy Terrace   2138
+Cherry Court   2139
+Cherry Street   2139
+Chester Street   2140
+Chestnut Street   2139
+Chetwynd Road   2140
+Chilton Street   2138
+Church Street   2138
+Churchill Avenue   2140
+Clark Street   2139
+Clary Street   2139
+Clay Street   2140
+Clement Circle   2138
+Cleveland Street   2138
+Clifton Street   2140
+Clinton Street   2139
+Cogswell Avenue   2140
+Cogswell Court   2140
+Cogswell Place   2140
+Columbia Street   2139
+Columbia Street   2141
+Columbia Terrace   2139
+Columbus Avenue   2140
+Commercial Avenue   2142
+Commercial Avenue   2141
+Concord Avenue   2138
+Concord Lane   2138
+Concord Tpke   2140
+Coolidge Avenue   2138
+Coolidge Hill   2138
+Coolidge Hill Road   2138
+Copley Street   2138
+Corcoran Lane   2138
+Corcoran Way   2138
+Corliss Place   2139
+Cornelius Way   2141
+Corporal Burns Road   2138
+Cottage Court   2139
+Cottage Park Avenue   2140
+Cottage Park Court   2140
+Cottage Row   2139
+Cottage Street   2139
+Cowperthwaite Street   2138
+Craigie Circle   2138
+Craigie Street   2138
+Crawford Street   2139
+Creighton Street   2140
+Crescent Street   2138
+Cresto Terrace   2141
+Cross Street   2139
+Crossland Street   2139
+Cushing Street   2138
+Cutler Avenue   2138
+Cypress Street   2140
+Dana Place   2138
+Dana Street   2138
+Davenport Street   2140
+Davis Street   2139
+Day Street   2140
+Deacon Street   2142
+Decatur Street   2139
+Dewolfe Street   2138
+Dickinson Street   2139
+Dinsmore Court   2138
+Divinity Avenue   2138
+Doane Street   2138
+Dock Street   2142
+Dodge Street   2139
+Donnell Street   2138
+Douglas Street   2139
+Dover Street   2140
+Drummond Place   2140
+Dudley Court   2140
+Dudley Street   2140
+Dunstable Road   2138
+Dunster Street   2138
+Earhart Street   2141
+East Street   2141
+Eaton Street   2139
+Edmunds Street   2140
+Education Street   2141
+Edward T Sullivan Road   2138
+Eliot Square   2138
+Eliot Street   2138
+Ellery Place   2138
+Ellery Square   2138
+Ellery Street   2138
+Ellsworth Avenue   2139
+Ellsworth Park   2139
+Elm Street   2139
+Elm Street   2140
+Elmer Street   2138
+Elmwood Avenue   2138
+Emily Street   2139
+Emmet Place   2141
+Emmons Place   2138
+Endicott Street   2139
+Ericsson Street   2138
+Erie Street   2139
+Essex Street   2139
+Eustis Street   2140
+Evereteze Way   2141
+Everett Street   2138
+Exeter Park   2140
+Fainwood Circle   2139
+Fair Oaks Street   2140
+Fairfield Street   2140
+Fairmont Avenue   2139
+Fairmont Street   2139
+Fairview Avenue   2138
+Fallon Place   2138
+Farrar Street   2138
+Farrell Way   2139
+Farwell Place   2138
+Fawcett Street   2138
+Fayerweather Street   2138
+Fayette Park   2139
+Fayette Street   2139
+Felton Street   2138
+Fenno Street   2138
+Fern Street   2138
+Fernald Drive   2138
+Field Street   2138
+Fisk Place   2139
+Fiske Place   2139
+Flagg Street   2138
+Florence Street   2139
+Foch Street   2140
+Follen Lane   2138
+Follen Street   2138
+Forest Street   2140
+Fort Washington Place   2139
+Foster Place   2138
+Foster Street   2138
+Fountain Terrace   2138
+Frances Place   2140
+Francis Avenue   2138
+Franklin Place   2139
+Franklin Street   2139
+Fresh Pond Lane   2138
+Fresh Pond Pkwy   2138
+Fresh Pond Place   2138
+Frisbie Place   2138
+Front Street   2139
+Frost Street   2140
+Frost Terrace   2140
+Fulkerson Street   2141
+Fuller Place   2138
+Garden Court   2138
+Garden Lane   2138
+Garden Street   2138
+Garden Terrace   2138
+Gardner Road   2139
+Garfield Street   2138
+George Street   2140
+Gerry Street   2138
+Gerrys Landing Road   2138
+Gibson Street   2138
+Gilmore Street   2139
+Gladstone Street   2140
+Glenn Terrace   2139
+Glenwood Avenue   2139
+Gold Star Road   2140
+Gold Star Road Court   2140
+Gold Star Road Place   2140
+Goodman Road   2139
+Gordon Place   2139
+Gore Street   2141
+Gore Street Place   2141
+Gorham Street   2138
+Gracewood Park   2138
+Granite Street   2139
+Grant Street   2138
+Granville Road   2138
+Gray Gardens E   2138
+Gray Gardens W   2138
+Gray Street   2138
+Green Street   2139
+Greenough Avenue   2139
+Greenough Boulevard   2138
+Griswold Street   2138
+Grove Avenue   2139
+Grove Street   2138
+Grozier Road   2138
+Gurney Street   2138
+Hadley Street   2140
+Hamilton Street   2139
+Hamlin Street   2141
+Hammond Street   2138
+Hampshire Court   2139
+Hampshire Place   2139
+Hampshire Street   2139
+Hancock Park   2139
+Hancock Place   2139
+Hancock Street   2139
+Harding Street   2141
+Hardwick Street   2141
+Harold Place   2139
+Harrington Road   2140
+Harrington Terrace   2141
+Harris Street   2140
+Harrison Avenue   2140
+Harvard Street   2139
+Harvard Street   2138
+Harvey Street   2140
+Harwell Drive   2141
+Haskell Street   2140
+Hastings Square   2139
+Hawthorn Street   2138
+Hawthorne Park   2138
+Hayes Street   2139
+Hayward Street   2142
+Hazel Street   2138
+Healey Street   2138
+Hemlock Road   2138
+Henry Street   2139
+Herbert Street   2140
+Hews Street   2139
+High Street   2138
+Highland Avenue   2139
+Highland Avenue   2142
+Highland Park   2139
+Highland Street   2138
+Hill Muller Avenue   2140
+Hilliard Place   2138
+Hilliard Street   2138
+Hillside Avenue   2140
+Hillside Place   2140
+Hingham Street   2138
+Holden Green   2138
+Holden Street   2138
+Hollis Park   2140
+Hollis Street   2140
+Holly Avenue   2138
+Holmes Street   2138
+Holworthy Place   2138
+Holworthy Street   2138
+Holworthy Terrace   2138
+Holyoke Place   2138
+Holyoke Street   2138
+Homer Avenue   2138
+Hooper Place   2140
+Houghton Street   2139
+Houston Park   2140
+Hovey Avenue   2138
+Howard Street   2139
+Howland Street   2138
+Hubbard Avenue   2140
+Hubbard Park Road   2138
+Hudson Place   2138
+Hudson Street   2138
+Humboldt Street   2140
+Hunting Street   2141
+Hurlbut Street   2138
+Hurley Street   2141
+Huron Avenue   2138
+Hutchinson Street   2138
+Industrial Park Road   2141
+Inman Court   2139
+Inman Place   2139
+Inman Street   2139
+Irving Street   2138
+Irving Terrace   2138
+Ivy Street   2138
+Jackson Circle   2140
+Jackson Gardens   2139
+Jackson Place   2140
+Jackson Street   2140
+James Street   2138
+James Way   2141
+Jarvis Street   2138
+Jay Street   2139
+Jay Street Place   2139
+Jefferson Park   2140
+Jefferson Street   2141
+Jfk Street   2138
+Kassul Park   2140
+Kelley Street   2138
+Kelly Road   2139
+Kennedy Road   2138
+Kenway Street   2138
+Kenwood Street   2139
+Kimball Lane   2140
+Kimball Street   2140
+King Place   2139
+King Street   2140
+Kinnaird Street   2139
+Kirkland Place   2138
+Kirkland Road   2138
+Kirkland Street   2138
+Lake View Avenue   2138
+Lambert Street   2141
+Lamont Avenue   2138
+Lamson Place   2139
+Lancaster Street   2140
+Land Boulevard   2141
+Land Boulevard   2142
+Landsdowne Street   2139
+Langdon Square   2138
+Langdon Street   2138
+Larch Road   2138
+Larchwood Drive   2138
+Laurel Street   2139
+Lawn Court   2138
+Lawn Street   2138
+Lawrence Street   2139
+Lee Street   2139
+Leonard Avenue   2139
+Lexington Avenue   2138
+Lilac Court   2141
+Lincoln Lane   2138
+Lincoln Place   2139
+Lincoln Street   2141
+Lincoln Way   2140
+Linden Street   2138
+Line Street   2138
+Linehan Court   2141
+Linnaean Street   2138
+Linskey Way   2142
+Linwood Place   2139
+Livermore Place   2141
+Locke Street   2140
+Locust Street   2138
+Locust Terrace   2138
+Longfellow Park   2138
+Longfellow Road   2138
+Loomis Street   2138
+Lopez Avenue   2141
+Lopez Street   2139
+Lowell Street   2138
+Madison Avenue   2140
+Madison Street   2138
+Magazine Court   2139
+Magazine Street   2139
+Magee Street   2139
+Magnolia Avenue   2138
+Magoun Street   2140
+Main Street   2142
+Main Street   2139
+Malcolm Road   2138
+Manassas Avenue   2138
+Maple Avenue   2139
+Marcella Street   2141
+Marie Avenue   2139
+Marion Street   2141
+Market Street   2139
+Marney Street   2141
+Martin Street   2138
+Marvin Place   2139
+Mason Street   2138
+Massachusetts Avenue   2138
+Massachusetts Avenue   2139
+Massachusetts Avenue   2140
+Matignon Road   2140
+Max Avenue   2141
+May Street   2138
+Maynard Place   2138
+McLean Place   2140
+McTernan Street   2139
+Meacham Road   2140
+Mead Street   2140
+Meadow Way   2138
+Mellen Street   2138
+Memorial Drive   2138
+Memorial Drive   2139
+Memorial Drive   2142
+Mercer Circle   2138
+Merriam Street   2139
+Merrill Street   2139
+Michael Way   2141
+Middlesex Street   2140
+Mifflin Place   2138
+Mildred Hamilton Place   2139
+Mill Street   2138
+Miller Avenue   2140
+Milton Street   2140
+Monsignor Obrien Highway   2141
+Montague   2139
+Montague Street   2139
+Montgomery Street   2140
+Mooney Street   2138
+Moore Street   2139
+Morrison Court   2140
+Moulton Street   2138
+Mount Auburn Street   2138
+Mount Pleasant Street   2140
+Mount Vernon Street   2140
+Msgr O'Brien Highway   2141
+Muller Avenue   2140
+Mullins Court   2141
+Munroe Street   2142
+Murdock Street   2139
+Murray Hill Road   2140
+Murray Road   2140
+Museum Street   2138
+Museum Way   2141
+Myrtle Avenue   2138
+N Point Boulevard   2141
+New Street   2138
+Newell Street   2140
+Newell Terrace   2140
+Newman Street   2140
+Newport Road   2140
+Newton Street   2139
+Nichols Place   2138
+Norfolk Court   2139
+Norfolk Street   2139
+Norfolk Terrace   2139
+Norman Street   2138
+Normandy Avenue   2138
+Normandy Ter Exn   2138
+Normandy Terrace   2138
+Norris Street   2140
+Norton Place   2138
+Norumbega Street   2138
+Notre Dame Avenue   2140
+Nutting Road   2138
+Oak Street   2139
+Oakland Street   2139
+Old Dee Road   2138
+Olive Place   2140
+Orchard Street   2140
+Orrin Street   2138
+Osborne Street   2139
+Otis Street   2141
+Oxford Avenue   2138
+Oxford Street   2138
+Oxford Street   2140
+Pacific Street   2139
+Palermo Street   2141
+Palmer Street   2138
+Park Avenue   2138
+Parker Street   2138
+Parkway Terrace   2138
+Parnell Street   2141
+Pearl Street   2139
+Pearl Street Place   2139
+Pemberton Court   2140
+Pemberton Street   2140
+Pemberton Terrace   2140
+Percy Place   2139
+Perry Street   2139
+Peters Street   2139
+Phillips Place   2138
+Pilgrim Street   2139
+Pine Street   2139
+Pleasant Place   2139
+Pleasant Street   2139
+Plymouth Street   2141
+Plympton Street   2138
+Pond Place   2139
+Poplar Road   2138
+Porrington Street   2139
+Porter Circle   2140
+Porter Park   2140
+Porter Road   2140
+Porter Square   2140
+Porter Street   2141
+Portland Street   2139
+Portsmouth Street   2141
+Potter Park   2138
+Potter Street   2142
+Prentiss Street   2140
+Prescott Street   2138
+Prince Street   2139
+Princeton Avenue   2139
+Prospect Street   2139
+Puckertoot Road   2138
+Putnam Avenue   2139
+Putnam Court   2139
+Putnam Gdns   2139
+Quincy Street   2138
+Raymond Street   2140
+Raymond Street   2138
+Reed Street   2140
+Reed Street Court   2140
+Reed Street Terrace   2140
+Reed Terrace   2140
+Regent Street   2140
+Remington Street   2138
+Reservoir Street   2138
+Revere Street   2138
+Rice Circle   2140
+Rice Street   2140
+Richard Avenue   2140
+Richardson Street   2139
+Richdale Avenue   2140
+Riedesel Avenue   2138
+Rindge Avenue   2140
+Rindge Avenue Exd   2140
+Rindge Terrace   2140
+Rindgefield Street   2140
+River Street   2139
+Riverside Place   2139
+Riverside Road   2139
+Roberts Road   2138
+Robinson Street   2138
+Rockingham Place   2139
+Rockingham Street   2139
+Rockwell Street   2139
+Rogers Street   2142
+Rollins Court   2139
+Roseland Street   2140
+Ross Street   2138
+Royal Avenue   2138
+Rumeal Robinson Place   2139
+Russell Street   2140
+Rutland Street   2138
+S Normandy Avenue   2138
+Sacramento Place   2138
+Sacramento Street   2138
+Saginaw Avenue   2140
+Saint Gerard Terrace   2140
+Saint Mary Road   2139
+Saint Paul Street   2139
+Saint Saveur Court   2138
+Salem Street   2139
+Sargent Street   2140
+Saville Street   2138
+School Street   2139
+Sciarappa Street   2141
+Scott Street   2138
+Scouting Way   2139
+Seagrave Road   2140
+Seckle Street   2141
+Sedgewick Road   2138
+Sellers Street   2139
+Seven Pines Avenue   2140
+Shady Hill Road   2138
+Shady Hill Square   2138
+Shaler Lane   2138
+Shea Road   2140
+Shepard Street   2138
+Sheridan Street   2140
+Sherman Street   2140
+Sherman Street   2138
+Sibley Court   2138
+Sidney Street   2139
+Smart Street   2139
+Smith Place   2138
+Soden Place   2139
+Soden Street   2139
+Somerville Avenue   2140
+South Street   2138
+Sparks Place   2138
+Sparks Street   2138
+Speridakis Terrace   2139
+Spinelli Place   2138
+Spring Place   2141
+Spring Street   2141
+Springfield Street   2139
+Spruce Avenue   2138
+St Johns Road   2138
+St Sauveur Court   2138
+Standish Street   2138
+State Route 16   2138
+State Route 16   2140
+State Route 2   2138
+State Route 2   2139
+State Route 2   2140
+State Route 2 Alt   2138
+State Route 2 Alt   2140
+State Route 2 Alt   2139
+State Route 28   2141
+State Street   2139
+Stearns Street   2138
+Stinson Court   2139
+Story Street   2138
+Suffolk Street   2139
+Summer Street   2142
+Sumner Road   2138
+Sunset Road   2138
+Surrey Street   2138
+Sycamore Street   2140
+Talbot Street   2139
+Temple Street   2139
+Tenney Street   2140
+Terminal Road   2138
+Theriault Court   2140
+Thingvalla Avenue   2138
+Thorndike Place   2141
+Thorndike Street   2141
+Tierney Street   2138
+Traill Street   2138
+Traymore Street   2140
+Tremont Street   2139
+Trowbridge Place   2138
+Trowbridge Street   2138
+Trowbridge Terrace   2138
+Tudor Street   2139
+Tufts Street   2139
+Tyler Court   2140
+Union Place   2141
+Union Street   2139
+Union Street   2141
+Union Terrace   2141
+University Road   2138
+Upland Road   2140
+Upton Street   2139
+US Highway 3   2139
+US Highway 3   2142
+US Highway 3   2138
+Vail Court   2139
+Valentine Place   2139
+Valentine Street   2139
+Van Norden Street   2140
+Vandine Street   2141
+Vassal Lane   2138
+Vassar Street   2139
+Verdun Street   2140
+Village Street   2139
+Vincent Street   2140
+Vineyard Street   2138
+W Bellevue Avenue   2140
+W Bellevue Avenue   2138
+Wadsworth Street   2142
+Walbro Street   2139
+Walden Mews   2140
+Walden Square Road   2140
+Walden Street   2140
+Walden Street   2138
+Walker Court   2138
+Walker Street   2138
+Walker Street Place   2138
+Walker Terrace   2138
+Walnut Avenue   2140
+Ware Street   2138
+Warren Street   2141
+Warwick Park   2140
+Washburn Avenue   2140
+Washburn Terrace   2140
+Washington Avenue   2140
+Washington Court   2139
+Washington Street   2139
+Water Street   2141
+Waterhouse Street   2138
+Waterman Road   2138
+Watson Street   2139
+Waverly Street   2139
+Webster Avenue   2141
+Wellesley Street   2139
+Wellington Lane   2141
+Wendell Street   2138
+West Place   2139
+West Street   2139
+Westacott Court   2139
+Western Avenue   2139
+Westley Avenue   2140
+Wheeler Street   2138
+White Street   2140
+White Street Place   2140
+Whitney Avenue   2139
+Whitney Court   2139
+Whittemore Avenue   2140
+Whittier Street   2140
+Whittier Street   2138
+Willard Street   2138
+Willard Street Court   2138
+William Street   2139
+Willow Street   2141
+Wilson Avenue   2140
+Wilson Avenue   2138
+Wilson Road   2138
+Windsor Street   2139
+Windsor Street   2141
+Winslow Street   2138
+Winter Street   2141
+Winthrop Street   2138
+Wood Street   2140
+Woodbridge Street   2140
+Woodrow Wilson Court   2139
+Worcester Street   2139
+Worthington Street   2138
+Wright Street   2138
+Wyman Road   2138
+Wyman Street   2140
+Yerxa Road   2140
+York Place   2141
+York Street   2141
