@@ -3,3 +3,4 @@ Pipfile.lock
 page
 pdf/
 pdfminer.six/
+node_modules/
