@@ -1,5 +1,6 @@
 import json
 import collections
+from functools import reduce
 
 month_dict = {
     "06": "JUNE",
@@ -62,6 +63,10 @@ def count_street_name(street_name_list):
     sorted_counter_street = {k: v for k, v in sorted(counter_street.items(), reverse=True, key=lambda item: item[1])}
     return sorted_counter_street
 
+def get_how_many_times_street_name_discuss(street_list):
+    sum_street_qty = reduce(lambda a, b: a + b, [val for key, val in street_list.items()], 0)
+    return sum_street_qty
+
 sorted_counter_street = {}
 conference_name_street_dict = {}
 with open("classify_region.json", "r") as r:
@@ -85,6 +90,7 @@ with open("classify_region.json", "r") as r:
                 street_list
             )
         long_street_list.extend([replace_street_alias(street_name) for street_name in street_list])
+
     sorted_counter_street = count_street_name(long_street_list)
 
     conference_counted_name_street_dict = {
@@ -102,11 +108,30 @@ for street_name, num in sorted_counter_street.items():
 
 new_dict = [{"name":k, "value":v} for k, v in sorted_counter_street.items() if v > 2]
 data = {"name": "street name", "children": new_dict}
-print(data)
-for conference, street_name in conference_counted_name_street_dict.items():
 
-    print(conference)
-    print(street_name)
+#for conference, street_name in conference_counted_name_street_dict.items():
+#
+#    print(conference)
+#    print(street_name)
+#    print(f"street_qty: {get_how_many_times_street_name_discuss(street_name)}")
+
+street_data_list =[
+    { 
+        "name": conference,
+        "child": [{"name": street_name, "value": qty} for street_name, qty in street_name_dict.items()]
+    }
+    for conference, street_name_dict in conference_counted_name_street_dict.items()
+]
+for street_data in street_data_list:
+    for key, val in street_data.items():
+        if key == "child":
+            print(f"{key}: [" )
+            for v in val:
+                print(f"{v},")
+            print("],")
+        else:
+            print(f"{key}: {val},")
+
 
 #print(number_dict)
 
