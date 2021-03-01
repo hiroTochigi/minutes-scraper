@@ -118,19 +118,24 @@ data = {"name": "street name", "children": new_dict}
 street_data_list =[
     { 
         "name": conference,
-        "child": [{"name": street_name, "value": qty} for street_name, qty in street_name_dict.items()]
+        "children": [{"name": street_name, "value": qty} for street_name, qty in street_name_dict.items()]
     }
     for conference, street_name_dict in conference_counted_name_street_dict.items()
 ]
 for street_data in street_data_list:
+    print('{')
     for key, val in street_data.items():
-        if key == "child":
+        if key == "children":
             print(f"{key}: [" )
-            for v in val:
-                print(f"{v},")
-            print("],")
+            for i, v in enumerate(val):
+                if i == len(val) - 1:
+                    print(f"{v}")
+                else:
+                    print(f"{v},")
+            print("]")
         else:
-            print(f"{key}: {val},")
+            print(f'{key}: "{val}",')
+    print('},')
 
 
 #print(number_dict)

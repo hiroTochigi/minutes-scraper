@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {data} from './street.js'
+import {data} from './street_list.js'
 import TreeMap from "react-d3-treemap";
 // Include its styles in you build process as well
 import "react-d3-treemap/dist/react.d3.treemap.css";
