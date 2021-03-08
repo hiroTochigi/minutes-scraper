@@ -47,7 +47,7 @@ with open('allxml.txt', 'r') as r:
             word_set['word'].append(datum[letter_index:letter_index+1])
 
 
-page_list = []
+public_comment_list ={} 
 for page, info in word_set_list_set.items():
     position_set = set()
     char_list = []
@@ -59,14 +59,16 @@ for page, info in word_set_list_set.items():
     char_list.reverse()
     sentence = ''.join(char_list)
     if sentence.find('COM')>-1:
-        page_list.append(page)
+        public_comment_list[page] = sentence
         print(f'Page {page}: {sentence}')
             
 
+page_list = [page for page in public_comment_list]
 file1 = open('public_comment.txt', 'w')
 for page, info in word_set_list_set.items():
     if page in page_list:
-        file1.write(f'page {page}\n')
+        file1.write(f'page: {page}\n')
+        file1.write(f'{public_comment_list[page]}\n')
         for word in info['word_list']:
             if len(word['word']) > 1:
                 file1.write(word['word']+"\n")
