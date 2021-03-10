@@ -47,7 +47,7 @@ def process_files(
     output_dir = f"{CWD}/{output_dir_part}"
     start = get_index_without_prefix(input_prefix)
     file_name_list = get_read_file_list(input_dir)
-    output_file_name_list = [f"{output_prefix}_{filename[start:-4]}.txt" for filename in file_name_list]
+    output_file_name_list = [f"{output_prefix}_{filename[start:-len('.pdf')]}.txt" for filename in file_name_list]
     street_list = get_street_list()
     street_name_list = get_street_name_list(street_list)
     for index in range(len(file_name_list)):
