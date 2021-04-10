@@ -1,4 +1,5 @@
 
+import datetime
 import json
 import logging
 import os
@@ -8,12 +9,14 @@ import traceback
 
 from PyPDF2 import PdfFileReader, PdfFileWriter
 
-import take_data_from_pdf as tdfp
+import get_address
+import get_sentence_list as get_sentence_list 
+import get_specific_data_from_metadata as get_spe_data
 import get_read_file_list as grfl
 import process
-import get_specific_data_from_metadata as get_spe_data
+import take_data_from_pdf as tdfp
 
-DIRECTORY = 'test'
+DIRECTORY = 'pdf'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -84,7 +87,7 @@ def get_page_list(page_data, table_index):
 
 def save_text_box_as_txt(page_data, pdf_file):
 
-    file1 = open(f'{DIRECTORY}/{pdf_file}.txt', 'w')
+    file1 = open(f'pdf_text_box/{pdf_file}.txt', 'w')
     for page, word_set_list in page_data.items():
         file1.write(f'{page}\n')
         for word_set in word_set_list:
@@ -100,15 +103,43 @@ def convert_space_to_underscore(comment_id):
 
 def transform_comment_data_set(comment_data_set):
 
+    for page, comment_data in comment_data_set.items():
+        text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
+        if text_comments:
+            with open(comment_data['public_comment_path'], 'w') as w:
+                for comment in text_comments:
+                    w.write(comment)
+        comment_data['address'] = []
+        comment_data['address'].extend(get_address.get_address(text_comments))
+        comment_data['address'].extend(get_spe_data.get_address(comment_data['summary']))
+        
     return {
         comment_data['comment_number']: {
                 'summary': comment_data['summary'],
-                'address': get_spe_data.get_address(comment_data['summary']),
+                'address': comment_data['address'],
                 'name': get_spe_data.get_name(comment_data['summary']),
                 'topic': get_spe_data.get_topic(comment_data['summary']),
+                'date': comment_data['date'],
             }
         for page, comment_data in comment_data_set.items()
     }
+
+def get_military_date(pdf_file):
+
+    start = pdf_file.find(', ') + 2
+    end = re.search(r'\d, \d{4}', pdf_file).end()
+
+    year =  pdf_file[start:end].replace(',', '').split()[2]
+
+    day =  int(pdf_file[start:end].replace(',', '').split()[1])
+    day = '0' + str(day) if day < 10 else str(day)
+
+    month = pdf_file[start:end].replace(',', '').split()[0]
+    month = datetime.datetime.strptime(month, "%B").month
+    month = '0' + str(month) if month < 10 else str(month)
+
+    military_date = int(f'{year}{month}{day}')
+    return military_date
 
 def log_traceback(ex, ex_traceback, pdf_file):
     tb_lines = traceback.format_exception(ex.__class__, ex, ex_traceback)
@@ -116,14 +147,22 @@ def log_traceback(ex, ex_traceback, pdf_file):
     logging.error(pdf_file)
     logging.error(tb_text)
 
+def main():
 
-pdf_file_list = get_read_file_list(DIRECTORY)
-all_comment_data_set = {}
+    pdf_file_list = get_read_file_list(DIRECTORY)
+    all_comment_data_set = {}
 
-for i, pdf_file in enumerate(pdf_file_list):
+    if not os.path.isdir('each_public_comment_pdf'):
+        os.mkdir('each_public_comment_pdf')
+    if not os.path.isdir('each_public_comment'):
+        os.mkdir('each_public_comment')
+    if not os.path.isdir('pdf_text_box'):
+        os.mkdir('pdf_text_box')
 
-    if i == 0:
+    for i, pdf_file in enumerate(pdf_file_list):
+
         try:
+            date = get_military_date(pdf_file)
 
             abs_pdf_path = f'{os.getcwd()}/{DIRECTORY}/{pdf_file}'
             data = tdfp.convert_pdf_to_xml(abs_pdf_path)
@@ -144,7 +183,10 @@ for i, pdf_file in enumerate(pdf_file_list):
                         comment_data_set[index] = {
                             'comment_number': None,
                             'summary': word['word'],
-                            'page_list': get_page_list(page_data, f'{communication_number}\.{index}\.[a-z]')
+                            'page_list': get_page_list(page_data, f'{communication_number}\.{index}\.[a-z]'),
+                            'public_comment_path': '',
+                            'public_comment_path_pdf': '',
+                            'date': date,
                         }
 
                         scraping_start = True
@@ -153,6 +195,8 @@ for i, pdf_file in enumerate(pdf_file_list):
                         assert not comment_data_set[index]['comment_number']
                         comment_data_set[index]['comment_number'] = word['word']
                         comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
+                        comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
+                        comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
                         index = ''
                         scraping_start = False
                     
@@ -168,7 +212,7 @@ for i, pdf_file in enumerate(pdf_file_list):
                     for page in comment_data['page_list']:
                         writer.addPage(reader.getPage(page))
 
-                    with open(f'each_public_comment_pdf/{comment_data["comment_number"]}.pdf', 'wb') as outfile:
+                    with open(comment_data['public_comment_path_pdf'], 'wb') as outfile:
                         writer.write(outfile)
 
             comment_data_set = transform_comment_data_set(comment_data_set)
@@ -179,11 +223,11 @@ for i, pdf_file in enumerate(pdf_file_list):
             log_traceback(ex, ex_traceback, pdf_file)
             save_text_box_as_txt(page_data, pdf_file)
 
-print(all_comment_data_set)
+    with open(f'all_comment_metadata.json', 'w') as write:
+        write.write(json.dumps(all_comment_data_set))
 
-with open(f'all_comment_metadata_test.json', 'w') as write:
-    write.write(json.dumps(all_comment_data_set))
-
+if __name__ == '__main__':
+    main()
 
     #data = tdfp.convert_pdf_to_xml(abs_pdf_path)
 #

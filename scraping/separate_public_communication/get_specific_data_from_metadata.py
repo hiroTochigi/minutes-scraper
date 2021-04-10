@@ -38,9 +38,9 @@ def get_address(summary):
             if index > 0 and not TOPIC_START_WORD.search(sentence) and is_street_name(sentence):
                 street += sentence
     if len(street) > 0:
-        return street
+        return [street]
     else:
-        return None
+        return []
 
 def get_name(summary):
 

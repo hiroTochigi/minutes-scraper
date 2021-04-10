@@ -1,7 +1,10 @@
 
 import copy
+import logging
 import os
 import re
+import sys
+import traceback
 
 from typing import Union
 
@@ -10,13 +13,15 @@ import process
 import get_address
 
 UNUSED_WORD_REGEX = re.compile(r'Packet Pg\.|\d\.\d\.a')
-
-pdf_file = 'COM 662 #2020 .pdf'
-abs_pdf_path = f'{os.getcwd()}/{pdf_file}'
-data = tdfp.convert_pdf_to_xml(abs_pdf_path)
-page_data = process.get_word_block(data)
+ADDRESS_PATTERN = re.compile(r'^[0-9]{1,}\s')
 
 EMAIL_KEYWORD = ['From:', 'Sent:', 'To:', 'Subject:']
+
+def log_traceback(ex, ex_traceback, page_data):
+    tb_lines = traceback.format_exception(ex.__class__, ex, ex_traceback)
+    tb_text = ''.join(tb_lines)
+    logging.error(page_data)
+    logging.error(tb_text)
 
 def cut_unused_word(old_page_data):
 
@@ -29,9 +34,7 @@ def grouped_by_height(page_data):
 
     for page, data in page_data.items():
         for index, word_box in enumerate(data['word_list']):
-            if index == 0:
-                word_box['diff'] = word_box['top'] - data['word_list'][index+1]['top']
-            elif index == len(data['word_list']) - 1:
+            if index == len(data['word_list']) - 1:
                 word_box['diff'] =  None
             else:
                 word_box['diff'] = word_box['top'] -  data['word_list'][index+1]['top']
@@ -139,28 +142,51 @@ def get_whole_text(clean_sentence_grouped_set):
                 whole_text += f"{sentence['sentence']} "
     return whole_text
 
-def get_sentence_list(clean_sentence_grouped_set):
+def _get_sentence_list(clean_sentence_grouped_set):
 
     sentence_list = [] 
     for page, sentence_grouped in clean_sentence_grouped_set.items():
         for sentence_id, sentence in sentence_grouped.items():
             if not ((page == '1' and sentence_id == 0) or is_email_header(sentence)):
                 sentence_list.append(sentence['sentence'])
-    return sentence_list
+                if not sentence['diff']:
+                    sentence_list.append('\nnext page\n')
+                else:
+                    next_line_num = int(sentence['diff']/10)
+                    for i in range(next_line_num):
+                        sentence_list.append('\n')
+    return sentence_list[:-1]
 
-new_page_data = cut_unused_word(page_data)
-groupd_by_height_page_data = grouped_by_height(new_page_data)
-page_data_with_sentence_id = add_sentence_group_id(groupd_by_height_page_data)
-sentence_grouped_set = get_sentence_grouped(page_data_with_sentence_id)
-clean_sentence_grouped_set = get_clean_sentence_grouped(sentence_grouped_set)
-email_header_id = is_email(clean_sentence_grouped_set)
-if not email_header_id is None:
+def get_sentence_list(page_data):
 
-    address_list = [ 
-            address for address in 
-            get_address.get_address(get_sentence_list(clean_sentence_grouped_set)) if len(address) > 0 
-        ]
-    print(address_list)
+    try:
+        new_page_data = cut_unused_word(page_data)
+        groupd_by_height_page_data = grouped_by_height(new_page_data)
+        page_data_with_sentence_id = add_sentence_group_id(groupd_by_height_page_data)
+        sentence_grouped_set = get_sentence_grouped(page_data_with_sentence_id)
+        clean_sentence_grouped_set = get_clean_sentence_grouped(sentence_grouped_set)
+        return _get_sentence_list(clean_sentence_grouped_set)
+
+    except Exception as ex:
+        _, _, ex_traceback = sys.exc_info()
+        log_traceback(ex, ex_traceback, page_data)
+        return None 
+
+
+#def extract_address_list(page_data):
+#
+#    email_header_id = is_email(clean_sentence_grouped_set)
+#    if not email_header_id is None:
+#
+#        address_list = [ 
+#                address for address in 
+#                get_address.get_address(_get_sentence_list(clean_sentence_grouped_set)) if len(address) > 0  
+#            ]
+#        return address_list
+#    else:
+#        return None
+
+    
     #for page, sentence_grouped in clean_sentence_grouped_set.items():
     #    for sentence_id, sentence in sentence_grouped.items():
     #        if not ((page == '1' and sentence_id == 0) or is_email_header(sentence)):
