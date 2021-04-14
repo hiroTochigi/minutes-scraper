@@ -3,7 +3,7 @@ import os
 import requests
 import time
 
-YEAR = 2020
+YEAR = 2021
 PDF_TYPE = 'Agenda Packet' if YEAR != 2020 else 'Minutes'
 
 def find_target_text(text):

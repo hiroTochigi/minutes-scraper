@@ -10,6 +10,7 @@ import traceback
 from PyPDF2 import PdfFileReader, PdfFileWriter
 
 import get_address
+import get_keyword_list
 import get_sentence_list as get_sentence_list 
 import get_specific_data_from_metadata as get_spe_data
 import get_read_file_list as grfl
@@ -105,10 +106,13 @@ def transform_comment_data_set(comment_data_set):
 
     for page, comment_data in comment_data_set.items():
         text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
+        comment_data['keyword_list'] = {}
         if text_comments:
             with open(comment_data['public_comment_path'], 'w') as w:
                 for comment in text_comments:
                     w.write(comment)
+            with open(comment_data['public_comment_path'], ) as r:
+                comment_data['keyword_list'] = get_keyword_list.get_keyword_list(r.read())
         comment_data['address'] = []
         comment_data['address'].extend(get_address.get_address(text_comments))
         comment_data['address'].extend(get_spe_data.get_address(comment_data['summary']))
@@ -117,6 +121,7 @@ def transform_comment_data_set(comment_data_set):
         comment_data['comment_number']: {
                 'summary': comment_data['summary'],
                 'address': comment_data['address'],
+                'keyword_list': comment_data['keyword_list'],
                 'name': get_spe_data.get_name(comment_data['summary']),
                 'topic': get_spe_data.get_topic(comment_data['summary']),
                 'date': comment_data['date'],
