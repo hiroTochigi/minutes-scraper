@@ -16,8 +16,10 @@ import get_specific_data_from_metadata as get_spe_data
 import get_read_file_list as grfl
 import process
 import take_data_from_pdf as tdfp
+import extract_text_by_orc as orc
+import get_category_list as category
 
-DIRECTORY = 'pdf'
+DIRECTORY = 'test'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -105,17 +107,29 @@ def convert_space_to_underscore(comment_id):
 def transform_comment_data_set(comment_data_set):
 
     for page, comment_data in comment_data_set.items():
-        text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
-        comment_data['keyword_list'] = {}
-        if text_comments:
-            with open(comment_data['public_comment_path'], 'w') as w:
-                for comment in text_comments:
-                    w.write(comment)
-            with open(comment_data['public_comment_path'], ) as r:
-                comment_data['keyword_list'] = get_keyword_list.get_keyword_list(r.read())
-        comment_data['address'] = []
-        comment_data['address'].extend(get_address.get_address(text_comments))
-        comment_data['address'].extend(get_spe_data.get_address(comment_data['summary']))
+        
+        if comment_data['analyze']:
+            print(f"Analyze {comment_data['public_comment_path_pdf']}")
+            text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
+            comment_data['keyword_list'] = {}
+            comment_data['address'] = []
+            if text_comments:
+                with open(comment_data['public_comment_path'], 'w') as w:
+                    for comment in text_comments:
+                        w.write(comment)
+            else:
+                orc.extract_text_by_orc(
+                        comment_data['public_comment_path_pdf'],
+                        comment_data['public_comment_path']
+                    )
+            print("Extract keywords")
+            if os.path.isfile(comment_data['public_comment_path']):
+                with open(comment_data['public_comment_path'], ) as r:
+                    comment_data['keyword_list'] = get_keyword_list.get_keyword_list(r.read())
+                    comment_data['address'].extend(get_address.get_address(r.readlines()))
+                comment_data['address'].extend(get_spe_data.get_address(comment_data['summary']))
+        else:
+            print(f"System cannot find {comment_data['public_comment_path_pdf']}")
         
     return {
         comment_data['comment_number']: {
@@ -125,9 +139,20 @@ def transform_comment_data_set(comment_data_set):
                 'name': get_spe_data.get_name(comment_data['summary']),
                 'topic': get_spe_data.get_topic(comment_data['summary']),
                 'date': comment_data['date'],
+                'category': get_category(comment_data["keyword_list"], comment_data["summary"])
             }
-        for page, comment_data in comment_data_set.items()
+        for page, comment_data in comment_data_set.items() if comment_data['analyze']
     }
+
+def get_category(keyword_list, summary):
+
+    category_list_1 = []
+    category_list_1.extend(category.get_category_list(keyword_list))
+    category_list_1.extend(category.get_category_from_summary(summary))
+    category_list = list(set(category_list_1))
+    if len(category_list) > 1 and 'Miscellaneous' in category_list:
+        category_list = [ category for category in category_list if category != 'Miscellaneous']
+    return category_list
 
 def get_military_date(pdf_file):
 
@@ -152,6 +177,13 @@ def log_traceback(ex, ex_traceback, pdf_file):
     logging.error(pdf_file)
     logging.error(tb_text)
 
+def is_pubic_comment_sumary(word):
+    return(
+        PUBLIC_COMMENT_EXPLANATION.search(word['word']) 
+        and 
+        word['word'].lower().find('communication')>-1
+    )
+
 def main():
 
     pdf_file_list = get_read_file_list(DIRECTORY)
@@ -163,53 +195,70 @@ def main():
         os.mkdir('each_public_comment')
     if not os.path.isdir('pdf_text_box'):
         os.mkdir('pdf_text_box')
+    if not os.path.isdir('jpg'):
+        os.mkdir('jpg')
 
     for i, pdf_file in enumerate(pdf_file_list):
 
+        print(f"Process {pdf_file}")
         try:
             date = get_military_date(pdf_file)
 
+            print(f"Analyze {pdf_file}")
             abs_pdf_path = f'{os.getcwd()}/{DIRECTORY}/{pdf_file}'
             data = tdfp.convert_pdf_to_xml(abs_pdf_path)
             page_data = process.get_word_block(data)
 
+            print('Extract COM numbers')
             public_comment_summary_page_list = get_public_comment_summary_page(page_data)
             communication_number = get_communication_num(page_data)
 
+            print('Analyze summary pages')
             comment_data_set = {}
             index = ''
             for page in public_comment_summary_page_list:
                 scraping_start = False
-                for word in page_data[page]['word_list']:
+                try:
+                    for word in page_data[page]['word_list']:
 
-                    if PUBLIC_COMMENT_EXPLANATION.search(word['word']):
-                        index = get_index(word)
+                        if is_pubic_comment_sumary(word):
+                            index = get_index(word)
 
-                        comment_data_set[index] = {
-                            'comment_number': None,
-                            'summary': word['word'],
-                            'page_list': get_page_list(page_data, f'{communication_number}\.{index}\.[a-z]'),
-                            'public_comment_path': '',
-                            'public_comment_path_pdf': '',
-                            'date': date,
-                        }
+                            comment_data_set[index] = {
+                                'comment_number': None,
+                                'summary': word['word'],
+                                'page_list': get_page_list(page_data, f'{communication_number}\.{index}\.[a-z]'),
+                                'public_comment_path': '',
+                                'public_comment_path_pdf': '',
+                                'date': date,
+                                'analyze': None,
+                            }
 
-                        scraping_start = True
+                            scraping_start = True
 
-                    elif PUBLIC_COMMENT_NUM.search(word['word']):
-                        assert not comment_data_set[index]['comment_number']
-                        comment_data_set[index]['comment_number'] = word['word']
-                        comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
-                        comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
-                        comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
-                        index = ''
-                        scraping_start = False
-                    
-                    elif scraping_start:
-                        comment_data_set[index]['summary'] += f" {word['word']}"
+                        elif PUBLIC_COMMENT_NUM.search(word['word']):
+                            assert not comment_data_set[index]['comment_number']
+                            comment_data_set[index]['comment_number'] = word['word']
+                            comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
+                            comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
+                            comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
+                            index = ''
+                            scraping_start = False
+                        
+                        elif scraping_start:
+                            comment_data_set[index]['summary'] += f" {word['word']}"
+
+                except Exception as ex:
+                    _, _, ex_traceback = sys.exc_info()
+                    logging.error(f"{pdf_file} at {page}")
+                    log_traceback(ex, ex_traceback, pdf_file)
+                    save_text_box_as_txt(page_data, pdf_file)
+                    index = ''
+                    scraping_start = False
 
             with open(abs_pdf_path, 'rb') as infile:
 
+                print('Extract each public comment pdf')
                 for index, comment_data  in comment_data_set.items():
 
                     reader = PdfFileReader(infile)
@@ -219,11 +268,19 @@ def main():
 
                     with open(comment_data['public_comment_path_pdf'], 'wb') as outfile:
                         writer.write(outfile)
+                    
+                    file_size = os.path.getsize(comment_data['public_comment_path_pdf'])
+                    if file_size < 1000:
+                        comment_data['analyze'] = False
+                    else:
+                        comment_data['analyze'] = True 
 
+            print('Make metadata')
             comment_data_set = transform_comment_data_set(comment_data_set)
             all_comment_data_set = {**all_comment_data_set, **comment_data_set}
 
         except Exception as ex:
+            print(f"Fail to analyze {pdf_file}")
             _, _, ex_traceback = sys.exc_info()
             log_traceback(ex, ex_traceback, pdf_file)
             save_text_box_as_txt(page_data, pdf_file)
