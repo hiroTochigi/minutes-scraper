@@ -63,6 +63,8 @@ CATEGORY_LIST = {
         },
 }
 
+json_file = 'all_comment_metadata.json'
+
 def find_category(word):
 
     for category, keyword_list_set in CATEGORY_LIST.items():
@@ -114,7 +116,7 @@ def get_category_from_summary(summary):
         return category_list
 
 def main():
-    with open('all_comment_metadata.json') as r:
+    with open(json_file) as r:           
         data = json.loads(r.read())
         for title, datum in data.items():
             category_list = []
@@ -127,7 +129,7 @@ def main():
         for title, datum in data.items():
             print(f"{title} category is {datum.get('category')}")
     
-    with open('all_comment_metadata.json', 'w') as w:
+    with open(json_file, 'w') as w:
         w.write(json.dumps(data))
 
 if __name__ == '__main__':
