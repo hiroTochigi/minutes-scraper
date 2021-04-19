@@ -18,8 +18,10 @@ import process
 import take_data_from_pdf as tdfp
 import extract_text_by_orc as orc
 import get_category_list as category
+import separate_pdf_and_ocr as separate
+import check_bogus_text as bogus
 
-DIRECTORY = 'test'
+DIRECTORY = 'pdf'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -113,14 +115,24 @@ def transform_comment_data_set(comment_data_set):
             text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
             comment_data['keyword_list'] = {}
             comment_data['address'] = []
-            if text_comments:
+            if text_comments and not bogus.is_bogus_text(text_comments):
                 with open(comment_data['public_comment_path'], 'w') as w:
                     for comment in text_comments:
                         w.write(comment)
             else:
-                orc.extract_text_by_orc(
-                        comment_data['public_comment_path_pdf'],
-                        comment_data['public_comment_path']
+                page_num = 0
+                with open(comment_data['public_comment_path_pdf'], 'rb') as infile:
+                    reader = PdfFileReader(infile)
+                    page_num = reader.getNumPages()
+                if page_num <= 50:
+                    orc.extract_text_by_orc(
+                            comment_data['public_comment_path_pdf'],
+                            comment_data['public_comment_path']
+                        )
+                elif page_num > 50:
+                    separate.separate_pdf_and_ocr(
+                            comment_data['public_comment_path_pdf'],
+                            comment_data['public_comment_path']
                     )
             print("Extract keywords")
             if os.path.isfile(comment_data['public_comment_path']):
@@ -184,10 +196,7 @@ def is_pubic_comment_sumary(word):
         word['word'].lower().find('communication')>-1
     )
 
-def main():
-
-    pdf_file_list = get_read_file_list(DIRECTORY)
-    all_comment_data_set = {}
+def initialize():
 
     if not os.path.isdir('each_public_comment_pdf'):
         os.mkdir('each_public_comment_pdf')
@@ -197,6 +206,23 @@ def main():
         os.mkdir('pdf_text_box')
     if not os.path.isdir('jpg'):
         os.mkdir('jpg')
+    if not os.path.isdir('separated_pdf'):
+        os.mkdir('separated_pdf')
+
+def are_same_year(comment_number, pdf_date):
+
+    comment_year = re.search(r'#20\d{2}', comment_number).group(0)[1:]
+    assert comment_year.isdigit()
+    comment_year = int(comment_year)
+    pdf_year = int(pdf_date/10000)
+    return comment_year == pdf_year
+
+def main():
+
+    initialize()
+
+    pdf_file_list = get_read_file_list(DIRECTORY)
+    all_comment_data_set = {}
 
     for i, pdf_file in enumerate(pdf_file_list):
 
@@ -239,9 +265,15 @@ def main():
                         elif PUBLIC_COMMENT_NUM.search(word['word']):
                             assert not comment_data_set[index]['comment_number']
                             comment_data_set[index]['comment_number'] = word['word']
-                            comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
-                            comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
-                            comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
+                            if are_same_year(
+                                    comment_data_set[index]['comment_number'],
+                                    comment_data_set[index]['date']
+                                ):
+                                comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
+                                comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
+                                comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
+                            else:
+                                del comment_data_set[index]
                             index = ''
                             scraping_start = False
                         

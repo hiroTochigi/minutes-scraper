@@ -13,7 +13,7 @@ def log_traceback(ex, ex_traceback, input_file):
     logging.error(input_file)
     logging.error(tb_text)
 
-def extract_text_by_orc(input, output):
+def extract_text_by_orc(input, output, separated=False):
     
     '''
     Part #1 : Converting PDF to images
@@ -52,7 +52,12 @@ def extract_text_by_orc(input, output):
         
         # Open the file in append mode so that 
         # All contents of all images are added to the same file
-        f = open(output, "w")
+        if separated:
+            f = open(output, "a")
+        else:
+            f = open(output, "w")
+
+
         
         # Iterate from 1 to total number of pages
         for i in range(1, filelimit + 1):
@@ -88,3 +93,12 @@ def extract_text_by_orc(input, output):
     except Exception as ex:
         _, _, ex_traceback = sys.exc_info()
         log_traceback(ex, ex_traceback, input)
+    
+def main():
+
+    extract_text_by_orc("each_public_comment_pdf/COM 329 #2020.pdf","COM 329 #2020.txt" )
+
+
+if __name__ == '__main__':
+    main()
+
