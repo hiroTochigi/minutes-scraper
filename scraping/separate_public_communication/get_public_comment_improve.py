@@ -208,6 +208,8 @@ def initialize():
         os.mkdir('jpg')
     if not os.path.isdir('separated_pdf'):
         os.mkdir('separated_pdf')
+    if not os.path.isdir('metadata'):
+        os.mkdir('metadata')
 
 def are_same_year(comment_number, pdf_date):
 
@@ -310,6 +312,9 @@ def main():
             print('Make metadata')
             comment_data_set = transform_comment_data_set(comment_data_set)
             all_comment_data_set = {**all_comment_data_set, **comment_data_set}
+            with open(f'metadata/{pdf_file}.json', 'w') as write:
+                write.write(json.dumps(comment_data_set))
+
 
         except Exception as ex:
             print(f"Fail to analyze {pdf_file}")
