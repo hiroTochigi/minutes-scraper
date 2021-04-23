@@ -46,13 +46,21 @@ def get_noun_counter(text) -> collections.Counter:
 
     return collections.Counter(noun_list), compound_noun_list
 
+def is_target_noun(compound_noun, common_word):
+
+    return(
+        any([ len(noun) <= len(common_word) + 2 and noun.find(common_word)>-1 for noun in compound_noun.split() ])
+        or
+        any([ len(noun) <= len(common_word) + 2 and noun.find(common_word)>-1 for noun in compound_noun.split('-') ])
+    )
+
 def _get_keyword_list(common_word_list, compound_noun_list):
 
     compound_word_dict = {}
     for common_word in common_word_list:
         compound_word_dict[common_word] = []
         for compound_noun in compound_noun_list:
-            if compound_noun.find(common_word)>-1:
+            if is_target_noun(compound_noun, common_word):
                 compound_word_dict[common_word].append(compound_noun)
     return compound_word_dict
 
@@ -68,7 +76,7 @@ def get_keyword_list(raw_text):
         text = clean_text(raw_text)
         noun_counter, compound_noun_list = get_noun_counter(text)
         common_word_list = [
-                common_word[0] for common_word in noun_counter.most_common(30)
+                common_word[0] for common_word in noun_counter.most_common(100)
             ]
         keyword_list = _get_keyword_list(common_word_list, compound_noun_list)
         return keyword_list

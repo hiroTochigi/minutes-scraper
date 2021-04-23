@@ -1,73 +1,115 @@
+import copy
 import json
 import re
 
-CATEGORY_LIST = {
+CATEGORY_KEYWORD_LIST = {
     'Housing': {
         'lazy': ["housing", "tenant", "affordable", "zoning", "eviction", "propert"],
-        'restrict': ["aho"]
+        'restrict': ["aho"],
         },
     'Local Economy': {
         "lazy": ["restaurant", "business"],
-        "restrict": []
+        "restrict": [],
         },
     'Art': {
         "lazy":["artistic"],
-        "restrict": ["art", "arts"]
+        "restrict": ["art", "arts"],
         },
     'School': {
         "lazy": ["school"],
-        "restrict": ["crls"]
+        "restrict": ["crls"],
         },
     'Bike': {
-        "lazy": ["cycling"],
-        "restrict": ["bike", "bikes"]
+        "lazy": ["cycling", 'bicycle'],
+        "restrict": ["bike", "bikes"],
         },
     "Transportation": {
-        "lazy": ["parking", "traffic", "pedestrian"],
-        "restrict": []
+        "lazy": ["parking", "traffic", "pedestrian", "sidewalk"],
+        "restrict": ['car', 'cars'],
         },
     "Public Transportation": {
         "lazy": [],
-        "restrict": ["bus", "buses"]
+        "restrict": ["bus", "buses", 'train', 'trains'],
+        'frequency': 0,
         },
     "Covid-19": {
         "lazy": ["covid", "mask", "transmission", "ventilation", 'social distance'],
-        "restrict": []},
+        "restrict": [],
+        },
     "Environment": {
         "lazy": ["natural gas", "environment", "vegetation", "animal harm", "climate"],
-        "restrict": ["tree", "trees"]
+        "restrict": ["tree", "trees"],
         },
     "Police": {
         "lazy": ["police", "tear gas"],
-        "restrict": []
+        "restrict": [],
+        'frequency': 0,
         },
     "Cannabis": {
         "lazy": ["cannabis"],
-        "restrict": []
+        "restrict": [],
         },
     "Municipal Broadband": {
         "lazy": ["municipal broadband"],
-        "restrict": []
+        "restrict": [],
         },
     "City Manager": {
         "lazy": ["city manager's contract", "city manager&s contract"],
-        "restrict": []
+        "restrict": [],
+        'frequency': 0,
         },
     "Campaign Finance Reform": {
         "lazy": ["campaign finance reform"],
-        "restrict": []
+        "restrict": [],
         },
     "Racism": {
         "lazy": ["racism"],
-        "restrict": []
+        "restrict": [],
         },
+}
+
+CATEGORY_DICT = {
+    name: {
+        'lazy': value['lazy'],
+        'restrict': value['restrict'],
+        'frequency': 0,
+        'keyword_list': [],
+    } for name, value in CATEGORY_KEYWORD_LIST.items()
 }
 
 json_file = 'all_comment_metadata.json'
 
+def find_category_frequency_list(word_freq_list):
+
+    category_data_set = copy.deepcopy(CATEGORY_DICT)
+    category_list = [category for category in category_data_set]
+
+    for word in word_freq_list:
+        for category in category_list:
+            for k_type, keyword_list in category_data_set[category].items():
+                if k_type == "restrict":
+                    for keyword in keyword_list:
+                        if any([el == keyword for el in word['compound_noun'].lower().split()]):
+                            category_data_set[category]['frequency'] += word['frequency']
+                            category_data_set[category]['keyword_list'].append(word['compound_noun'])
+                elif k_type == 'lazy':
+                    for keyword in keyword_list:
+                        if word['compound_noun'].lower().find(keyword)>-1:
+                            category_data_set[category]['frequency'] += word['frequency']
+                            category_data_set[category]['keyword_list'].append(word['compound_noun'])
+    return [ 
+            {
+                'category': category,
+                'frequency': category_data_set[category]['frequency'],
+                'keyword_list': category_data_set[category]['keyword_list'] 
+            } 
+            for category in category_list if category_data_set[category]['frequency'] > 0 
+        ]
+    #sorted( key=lambda category_data_set: category_data_set[category]['frequency'], reverse=True )
+
 def find_category(word):
 
-    for category, keyword_list_set in CATEGORY_LIST.items():
+    for category, keyword_list_set in CATEGORY_DICT.items():
         for k_type, keyword_list in keyword_list_set.items():
             if k_type == "restrict":
                 for keyword in keyword_list:
@@ -99,7 +141,7 @@ def get_category_from_summary(summary):
 
         category_set = set()
         category_list = []
-        for category, keyword_list_set in CATEGORY_LIST.items():
+        for category, keyword_list_set in CATEGORY_DICT.items():
             for k_type, keyword_list in keyword_list_set.items():
                 if k_type == "restrict":
                     for keyword in keyword_list:
