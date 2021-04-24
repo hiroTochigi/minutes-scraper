@@ -21,7 +21,19 @@ import get_category_list as category
 import separate_pdf_and_ocr as separate
 import check_bogus_text as bogus
 
-DIRECTORY = 'pdf'
+DATA_DIRECTORY = 'data'
+LOG_DIRECTORY = 'logs'
+TEMP_DIRECTORY = 'temp'
+
+DOWNLOAD_PDF = 'data/pdf'
+INPUT_DIRECTORY = 'data/test'
+OUTPUT_DIRECTORY = 'data/new_metadata'
+TEXT_PUBLIC_COMMENT  = 'data/each_public_comment'
+PDF_PUBLIC_COMMENT  = 'data/each_public_comment_pdf'
+EACH_METADATA_DIRECTORY = 'data/each_metadata'
+PDF_BOX = 'logs/pdf_text_box'
+JPG = 'temp/jpg'
+SEPARATED_PDF = 'temp/separated_pdf'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -92,7 +104,7 @@ def get_page_list(page_data, table_index):
 
 def save_text_box_as_txt(page_data, pdf_file):
 
-    file1 = open(f'pdf_text_box/{pdf_file}.txt', 'w')
+    file1 = open(f'{PDF_BOX}/{pdf_file}.txt', 'w')
     for page, word_set_list in page_data.items():
         file1.write(f'{page}\n')
         for word_set in word_set_list:
@@ -116,7 +128,7 @@ def transform_comment_data_set(comment_data_set):
             comment_data['keyword_list'] = {}
             comment_data['address'] = []
             if text_comments and not bogus.is_bogus_text(text_comments):
-                with open(comment_data['public_comment_path'], 'w') as w:
+                with open(f"{comment_data['public_comment_path']}", 'w') as w:
                     for comment in text_comments:
                         w.write(comment)
             else:
@@ -127,16 +139,16 @@ def transform_comment_data_set(comment_data_set):
                 if page_num <= 50:
                     orc.extract_text_by_orc(
                             comment_data['public_comment_path_pdf'],
-                            comment_data['public_comment_path']
+                            f"{comment_data['public_comment_path']}"
                         )
                 elif page_num > 50:
                     separate.separate_pdf_and_ocr(
                             comment_data['public_comment_path_pdf'],
-                            comment_data['public_comment_path']
+                            f"{comment_data['public_comment_path']}"
                     )
             print("Extract keywords")
-            if os.path.isfile(comment_data['public_comment_path']):
-                with open(comment_data['public_comment_path'], ) as r:
+            if os.path.isfile(f"{comment_data['public_comment_path']}"):
+                with open(f"{comment_data['public_comment_path']}" ) as r:
                     comment_data['keyword_list'] = get_keyword_list.get_keyword_list(r.read())
                     comment_data['address'].extend(get_address.get_address(r.readlines()))
                 comment_data['address'].extend(get_spe_data.get_address(comment_data['summary']))
@@ -223,7 +235,7 @@ def main():
 
     initialize()
 
-    pdf_file_list = get_read_file_list(DIRECTORY)
+    pdf_file_list = get_read_file_list(DOWNLOAD_PDF)
     all_comment_data_set = {}
 
     for i, pdf_file in enumerate(pdf_file_list):
@@ -233,7 +245,7 @@ def main():
             date = get_military_date(pdf_file)
 
             print(f"Analyze {pdf_file}")
-            abs_pdf_path = f'{os.getcwd()}/{DIRECTORY}/{pdf_file}'
+            abs_pdf_path = f'{os.getcwd()}/{DOWNLOAD_PDF}/{pdf_file}'
             data = tdfp.convert_pdf_to_xml(abs_pdf_path)
             page_data = process.get_word_block(data)
 
@@ -312,7 +324,7 @@ def main():
             print('Make metadata')
             comment_data_set = transform_comment_data_set(comment_data_set)
             all_comment_data_set = {**all_comment_data_set, **comment_data_set}
-            with open(f'metadata/{pdf_file}.json', 'w') as write:
+            with open(f'{EACH_METADATA_DIRECTORY}/{pdf_file}.json', 'w') as write:
                 write.write(json.dumps(comment_data_set))
 
 
@@ -322,7 +334,7 @@ def main():
             log_traceback(ex, ex_traceback, pdf_file)
             save_text_box_as_txt(page_data, pdf_file)
 
-    with open(f'all_comment_metadata.json', 'w') as write:
+    with open(f'{METADATA_DIRECTORY}/all_comment_metadata.json', 'w') as write:
         write.write(json.dumps(all_comment_data_set))
 
 if __name__ == '__main__':

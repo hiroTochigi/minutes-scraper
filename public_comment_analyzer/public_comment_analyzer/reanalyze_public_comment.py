@@ -15,9 +15,10 @@ import get_address
 import get_keyword_list
 import get_category_list as category
 
-INPUT_DIRECTORY = 'test'
-OUTPUT_DIRECTORY = 'new_metadata'
-PUBLIC_COMMENT  = 'each_public_comment'
+DATA_DIRECTORY = 'data'
+INPUT_DIRECTORY = 'data/test'
+OUTPUT_DIRECTORY = 'data/new_metadata'
+PUBLIC_COMMENT  = 'data/each_public_comment'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -40,8 +41,12 @@ def log_traceback(ex, ex_traceback, pdf_file):
 
 def initialize():
 
+    if not os.path.isdir(DATA_DIRECTORY):
+        os.mkdir(DATA_DIRECTORY)
     if not os.path.isdir(OUTPUT_DIRECTORY):
         os.mkdir(OUTPUT_DIRECTORY)
+    if not os.path.isdir(INPUT_DIRECTORY):
+        os.mkdir(INPUT_DIRECTORY)
 
 def get_category_with_frequency(comment_path):
 
