@@ -46,7 +46,7 @@ def initialize():
 def get_category_with_frequency(comment_path):
 
     noun_word_counter_set = set()
-    with open(Path(f'{PUBLIC_COMMENT}/{comment_path}.txt')) as r:
+    with open(Path(f'{PUBLIC_COMMENT}/{comment_path}.txt'), encoding='utf-8') as r:
         key_word_list = get_keyword_list.get_keyword_list(r.read())
         for key_word, noun_list in key_word_list.items():
             for word, num in collections.Counter(noun_list).items():
