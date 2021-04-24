@@ -6,7 +6,6 @@ pdfminer.six/
 node_modules/
 *.pdf
 *.json
-*.txt
 __pycache__/
 each_public_comment_pdf/
 get_public_comment_improve.log
