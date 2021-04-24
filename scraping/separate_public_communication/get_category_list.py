@@ -30,7 +30,6 @@ CATEGORY_KEYWORD_LIST = {
     "Public Transportation": {
         "lazy": [],
         "restrict": ["bus", "buses", 'train', 'trains'],
-        'frequency': 0,
         },
     "Covid-19": {
         "lazy": ["covid", "mask", "transmission", "ventilation", 'social distance'],
@@ -43,7 +42,6 @@ CATEGORY_KEYWORD_LIST = {
     "Police": {
         "lazy": ["police", "tear gas"],
         "restrict": [],
-        'frequency': 0,
         },
     "Cannabis": {
         "lazy": ["cannabis"],
