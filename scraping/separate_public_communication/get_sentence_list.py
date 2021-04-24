@@ -6,12 +6,6 @@ import re
 import sys
 import traceback
 
-from typing import Union
-
-import take_data_from_pdf as tdfp
-import process
-import get_address
-
 UNUSED_WORD_REGEX = re.compile(r'Packet Pg\.|\d\.\d\.a')
 ADDRESS_PATTERN = re.compile(r'^[0-9]{1,}\s')
 
@@ -95,7 +89,7 @@ def get_clean_sentence_grouped(grouped_sentence):
                 }
     return new_page_data
 
-def is_email(sentence_list: dict) -> Union[int, None] :
+def is_email(sentence_list: dict):
 
     for sentence_id, sentence in sentence_list['1'].items():
         find_num = 0
