@@ -3,8 +3,9 @@ import os
 import requests
 import time
 
-YEAR = 2020
+YEAR = 2015
 PDF_TYPE = 'Agenda Packet' if YEAR != 2020 else 'Minutes'
+store_dir = f"{YEAR}_pdf"
 
 def find_target_text(text):
     return (
@@ -92,11 +93,11 @@ def save_carendar_page_html():
 
 def main():
 
-    if not os.path.isdir('pdf'):
-        os.mkdir('pdf')
+    if not os.path.isdir(store_dir):
+        os.mkdir(store_dir)
 
     pre_file_path = f"http://cambridgema.iqm2.com/Citizens/"
-    store_file_path = get_pdf_directory_path(f"{os.getcwd()}/pdf/")
+    store_file_path = get_pdf_directory_path(f"{os.getcwd()}/{store_dir}/")
     save_carendar_page_html()
 
     with open("page", "r") as r:
