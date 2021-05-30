@@ -1,15 +1,16 @@
+
 import copy
 import json
 import re
 
 CATEGORY_KEYWORD_LIST = {
     'Housing': {
-        'lazy': ["tenant", "propert", "evict",  "affordable housing overlay",  "preserv", "transfer fee", "real estate"],
-        'restrict': ["home", "homes", "house", "houses", "zone", "zones", "aho"],
+        'lazy': ["hom", "hous", "tenant", "propert", "zon", "evict", "aho", "affordable housing overlay", "cpa", "preserv", "transfer fee", "real estate"],
+        'restrict': [],
         },
     'Local Economy': {
-        "lazy": ["restaurant", "business", "local", "organization"],
-        "restrict": ["close", "closes", "gym", "gyms"],
+        "lazy": ["restaurant", "business", "local", "clos", "gym", "organization"],
+        "restrict": [],
         },
     'Real Estate Development': {
         "lazy": ["project", "mass ave", "street", "revit"],
@@ -20,36 +21,36 @@ CATEGORY_KEYWORD_LIST = {
         "restrict": [],
         },
     'Art': {
-        "lazy":[],
-        "restrict": ["art", "arts"],
+        "lazy":["art"],
+        "restrict": [],
         },
     'School': {
         "lazy": ["school", "crls", "ringe", "superintendent", "teach", "learn"], #references cambridge ringe and latin school
         "restrict": [],
         },
     'Bike': {
-        "lazy": ["cycl", ],
-        "restrict": ['bike', 'bikes', "lane", "lanes"],
+        "lazy": ["cycl", 'bik', "lan"],
+        "restrict": [],
         },
     "Transportation": {
-        "lazy": ["parking", "traffic", "pedestrian", "sidewalk", ],
-        "restrict": ["car", "cars", "park", "parks"],
+        "lazy": ["parking", "traffic", "pedestrian", "sidewalk", "car", "park"],
+        "restrict": [],
         },
     "Public Transportation": {
-        "lazy": ["transit", "train", "subway", "mbta", "curb cut"],
-        "restrict": ["bus", "buses" ],
+        "lazy": ["transit", "bus", "train", "subway", "mbta", "curb cut"],
+        "restrict": [],
         },
     "Health": {
-        "lazy": ["covid", "transmission", "ventil", 'social distance', "health", "test"],
-        "restrict": ["mask", "masks", "sars"],
+        "lazy": ["covid", "mask", "transmission", "ventil", 'social distance', "health", "sars", "test"],
+        "restrict": [],
         },
     "Environment": {
-        "lazy": ["natural gas",  "canop", "environ", "vegetation", "animal", "climate", "charles", "vegetation", "green", "solar"],
-        "restrict": ["park", "tree", "parks", "trees"],
+        "lazy": ["natural gas", "park", "tree", "canop", "environ", "vegetation", "animal", "climate", "charles", "vegetation", "green", "solar"],
+        "restrict": [],
         },
     "Police": {
-        "lazy": ["police", "tear gas", "milit", "surveill", "shotspotter", ],
-        "restrict": ["crime", "crimes"],
+        "lazy": ["police", "tear gas", "milit", "surveill", "shotspotter", "crim"],
+        "restrict": [],
         },
     "Cannabis": {
         "lazy": ["cannabis", "weed", "cookies"],
@@ -72,7 +73,7 @@ CATEGORY_KEYWORD_LIST = {
         "restrict": [],
         },
     "Racism": {
-        "lazy": ["racism", "racial"],
+        "lazy": ["racism"],
         "restrict": [],
         },
     "In Memorium": {
@@ -90,7 +91,10 @@ CATEGORY_DICT = {
     } for name, value in CATEGORY_KEYWORD_LIST.items()
 }
 
-json_file = 'all_comment_metadata.json'
+json_file_list = [
+    (f"data/{i}_all_comment_metadata.json", f"data/new_{i}_all_comment_metadata.json") for i in range(2016, 2022)
+]
+
 
 def find_category_frequency_list(word_freq_list):
 
@@ -128,7 +132,7 @@ def find_category(word):
                 for keyword in keyword_list:
                     if any([el == keyword for el in word.lower().split()]):
                         return category
-            else:
+            elif k_type == "lazy":
                 for keyword in keyword_list:
                     if word.find(keyword)>-1:
                         return category
@@ -160,7 +164,7 @@ def get_category_from_summary(summary):
                     for keyword in keyword_list:
                         if any([el == keyword for el in summary.lower().split()]):
                             category_set.add(category)
-                else:
+                elif k_type == "lazy":
                     for keyword in keyword_list:
                         if summary.find(keyword)>-1:
                             category_set.add(category)
@@ -171,21 +175,22 @@ def get_category_from_summary(summary):
         return category_list
 
 def main():
-    with open(json_file) as r:           
-        data = json.loads(r.read())
-        for title, datum in data.items():
-            category_list = []
-            category_list.extend(get_category_list(datum['keyword_list']))
-            category_list.extend(get_category_from_summary(datum['summary']))
-            datum['category'] = list(set(category_list))
-            if len(datum['category']) > 1 and 'Miscellaneous' in datum['category']:
-                datum['category'] = [ category for category in datum['category'] if category != 'Miscellaneous']
+    for json_file in json_file_list:
+        with open(json_file[0]) as r:           
+            data = json.loads(r.read())
+            for title, datum in data.items():
+                category_list = []
+                category_list.extend(get_category_list(datum['keyword_list']))
+                category_list.extend(get_category_from_summary(datum['summary']))
+                datum['category'] = list(set(category_list))
+                if len(datum['category']) > 1 and 'Miscellaneous' in datum['category']:
+                    datum['category'] = [ category for category in datum['category'] if category != 'Miscellaneous']
+            
+            for title, datum in data.items():
+                print(f"{title} category is {datum.get('category')}")
         
-        for title, datum in data.items():
-            print(f"{title} category is {datum.get('category')}")
-    
-    with open(json_file, 'w') as w:
-        w.write(json.dumps(data))
+        with open(json_file[1], 'w') as w:
+            w.write(json.dumps(data))
 
 if __name__ == '__main__':
     main()

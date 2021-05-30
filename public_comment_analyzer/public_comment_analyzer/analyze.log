@@ -1,0 +1,24 @@
+ERROR:root:2021_all_comment_metadata.json
+ERROR:root:Traceback (most recent call last):
+  File "reanalyze_public_comment.py", line 94, in main
+    comment_data['category_with_frequency'] = get_category_with_frequency(comment_path)
+  File "reanalyze_public_comment.py", line 54, in get_category_with_frequency
+    with open(Path(f'{PUBLIC_COMMENT}/{comment_path}.txt'), encoding='utf-8') as r:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/each_public_comment/COM 16 #2021.txt'
+
+ERROR:root:2021_all_comment_metadata.json
+ERROR:root:Traceback (most recent call last):
+  File "reanalyze_public_comment.py", line 94, in main
+    comment_data['category_with_frequency'] = get_category_with_frequency(comment_path)
+  File "reanalyze_public_comment.py", line 54, in get_category_with_frequency
+    with open(Path(f'{PUBLIC_COMMENT}/{comment_path}.txt'), encoding='utf-8') as r:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/each_public_comment/COM 16 #2021.txt'
+
+ERROR:root:new_2021_all_comment_metadata.json
+ERROR:root:Traceback (most recent call last):
+  File "reanalyze_public_comment.py", line 94, in main
+    comment_data['category_with_frequency'] = get_category_with_frequency(comment_path)
+  File "reanalyze_public_comment.py", line 54, in get_category_with_frequency
+    with open(Path(f'{PUBLIC_COMMENT}/{comment_path}.txt'), encoding='utf-8') as r:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/each_public_comment/COM 16 #2021.txt'
+
