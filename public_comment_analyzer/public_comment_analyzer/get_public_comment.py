@@ -34,6 +34,7 @@ EACH_METADATA_DIRECTORY = 'data/each_metadata'
 PDF_BOX = 'logs/pdf_text_box'
 JPG = 'temp/jpg'
 SEPARATED_PDF = 'temp/separated_pdf'
+METADATA_DIRECTORY = 'data/metadata'
 
 PUBLIC_COMMENT_NUM = re.compile(r'COM\s\d{1,4}\s#')
 PUBLIC_COMMENT_EXPLANATION = re.compile(r'^\d{1,2}\.')
@@ -210,18 +211,37 @@ def is_pubic_comment_sumary(word):
 
 def initialize():
 
-    if not os.path.isdir('each_public_comment_pdf'):
-        os.mkdir('each_public_comment_pdf')
-    if not os.path.isdir('each_public_comment'):
-        os.mkdir('each_public_comment')
-    if not os.path.isdir('pdf_text_box'):
-        os.mkdir('pdf_text_box')
-    if not os.path.isdir('jpg'):
-        os.mkdir('jpg')
-    if not os.path.isdir('separated_pdf'):
-        os.mkdir('separated_pdf')
-    if not os.path.isdir('metadata'):
-        os.mkdir('metadata')
+    all_dir = [
+    DATA_DIRECTORY,
+    LOG_DIRECTORY,
+    TEMP_DIRECTORY,
+    DOWNLOAD_PDF,
+    INPUT_DIRECTORY,
+    OUTPUT_DIRECTORY,
+    TEXT_PUBLIC_COMMENT,
+    PDF_PUBLIC_COMMENT,
+    EACH_METADATA_DIRECTORY,
+    METADATA_DIRECTORY,
+    PDF_BOX,
+    JPG,
+    SEPARATED_PDF]
+
+    for each_dir in all_dir:
+        if not os.path.isdir(each_dir):
+            os.mkdir(each_dir)
+
+    #if not os.path.isdir('each_public_comment_pdf'):
+    #    os.mkdir('each_public_comment_pdf')
+    #if not os.path.isdir('each_public_comment'):
+    #    os.mkdir('each_public_comment')
+    #if not os.path.isdir('pdf_text_box'):
+    #    os.mkdir('pdf_text_box')
+    #if not os.path.isdir('jpg'):
+    #    os.mkdir('jpg')
+    #if not os.path.isdir('separated_pdf'):
+    #    os.mkdir('separated_pdf')
+    #if not os.path.isdir('metadata'):
+    #    os.mkdir('metadata')
 
 def are_same_year(comment_number, pdf_date):
 
@@ -284,8 +304,8 @@ def main():
                                     comment_data_set[index]['date']
                                 ):
                                 comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
-                                comment_data_set[index]['public_comment_path_pdf'] = f'each_public_comment_pdf/{comment_data_set[index]["comment_number"].strip()}.pdf'
-                                comment_data_set[index]['public_comment_path'] = f'each_public_comment/{comment_data_set[index]["comment_number"].strip()}.txt'
+                                comment_data_set[index]['public_comment_path_pdf'] = f'{PDF_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.pdf'
+                                comment_data_set[index]['public_comment_path'] = f'{TEXT_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.txt'
                             else:
                                 del comment_data_set[index]
                             index = ''
