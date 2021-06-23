@@ -128,7 +128,7 @@ def find_category(word):
                 for keyword in keyword_list:
                     if any([el == keyword for el in word.lower().split()]):
                         return category
-            else:
+            elif k_type == "lazy":
                 for keyword in keyword_list:
                     if word.find(keyword)>-1:
                         return category
@@ -160,7 +160,7 @@ def get_category_from_summary(summary):
                     for keyword in keyword_list:
                         if any([el == keyword for el in summary.lower().split()]):
                             category_set.add(category)
-                else:
+                elif k_type == "lazy":
                     for keyword in keyword_list:
                         if summary.find(keyword)>-1:
                             category_set.add(category)

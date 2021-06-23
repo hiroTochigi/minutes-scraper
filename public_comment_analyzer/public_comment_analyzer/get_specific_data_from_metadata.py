@@ -10,7 +10,7 @@ def cleanup(datum):
 
 def get_street_list():
 
-    with open('street_list.json') as r:
+    with open('env/street_list.json') as r:
         street_list = json.loads(r.read())
         return street_list['street_list']
 

@@ -11,3 +11,4 @@ each_public_comment_pdf/
 get_public_comment_improve.log
 junk/
 venv/
+!street_list.json
