@@ -118,6 +118,58 @@ def get_min_index(cluster_centers, all_data_set):
 
 "-----------------------------------------------------------------------------------"
 
+#def group(L):
+#    first = last = L[0]
+#    for n in L[1:]:
+#        if n - 1 == last: # Part of the group, bump the end
+#            last = n
+#        else: # Not part of the group, yield current group and start a new
+#            yield first, last
+#            first = last = n
+#    yield first, last # Yield the last group
+#
+#def separate_continuous(speaker_wav_dict_list):
+#    new_dict = {}
+#    neo_new_dict = []
+#    for speaker_wav_dict in speaker_wav_dict_list:
+#        for speaker, wav_list in speaker_wav_dict.items():
+#            new_dict[speaker] = list(group(wav_list))
+#    for speaker, wav_list in new_dict.items():
+#        neo_new_dict.extend( [({'group':wav, 'index':index, 'speaker':speaker}) 
+#                              for index, wav in enumerate([wav for wav in wav_list if wav[1] - wav[0] >2])])
+#        
+#    neo_new_dict = sorted(neo_new_dict, key=lambda key: key['group'][0])
+#    neo_new_dict = [
+#        {'group': [i for i in range(el['group'][0],el['group'][1]+1)] , 
+#         'speaker_index':el['index'], 
+#         'index': index,
+#         'speaker':el['speaker'],
+#         'len':el['group'][1] - el['group'][0]}
+#         for index, el in enumerate(neo_new_dict)]
+#    #neo_new_dict = [el for el in neo_new_dict if el['len']>=2]
+#    return neo_new_dict
+#
+#def get_speaker_wav_path_dict(speaker_wav_dict_list, wav_fpaths):
+#    speaker_wav_path_dict = {}
+#    for speaker_wav_dict in speaker_wav_dict_list:
+#        file_name = f"{('00'+str(speaker_wav_dict['index']))[-3:]}-"\
+#                    f"{('0'+str(speaker_wav_dict['speaker']))[-2:]}-"\
+#                    f"{('00'+str(speaker_wav_dict['speaker_index']))[-3:]}"
+#        speaker_wav_path_dict[file_name] = [ wav_fpaths[i] for i in speaker_wav_dict['group'] ]
+#    return speaker_wav_path_dict
+#
+#def merge_and_save_sound(audio_dir, speaker_wav_path_dict):
+#    
+#    merge_sound = AudioSegment.empty()
+#    for speaker, sound_list in speaker_wav_path_dict.items():
+#        print(speaker)
+#        for sound in sound_list:
+#            print(type(sound))
+#            merge_sound += sound
+#        merge_sound.export(f"{OUTPUT_DIR}{audio_dir}{speaker}.mp3", format="mp3")
+#        merge_sound = AudioSegment.empty()
+#
+
 def group(L):
     first = last = L[0]
     for n in L[1:]:
@@ -128,46 +180,109 @@ def group(L):
             first = last = n
     yield first, last # Yield the last group
 
-def separate_continuous(speaker_wav_dict_list):
+def separate_continuous_sound(speaker_wav_dict_list):
     new_dict = {}
     neo_new_dict = []
     for speaker_wav_dict in speaker_wav_dict_list:
         for speaker, wav_list in speaker_wav_dict.items():
             new_dict[speaker] = list(group(wav_list))
     for speaker, wav_list in new_dict.items():
-        neo_new_dict.extend( [({'group':wav, 'index':index, 'speaker':speaker}) 
-                              for index, wav in enumerate([wav for wav in wav_list if wav[1] - wav[0] >2])])
+        neo_new_dict.extend( [({'group':[w for w in wav], 'speaker':speaker}) 
+                              for wav in[wav for wav in wav_list if wav[1] - wav[0] >2]])
         
     neo_new_dict = sorted(neo_new_dict, key=lambda key: key['group'][0])
+    return neo_new_dict
+
+def consolidate_continuous_speaker(data_dict):
+    
+    neo_new_dict_second = {}
+    current_speaker = -1
+    index = 0
+    for data in data_dict:
+        if current_speaker == -1:
+            current_speaker = data['speaker']
+            neo_new_dict_second[index] = data
+        elif current_speaker == data['speaker']:
+            neo_new_dict_second[index]['group'].extend(data['group'])
+        elif current_speaker != data['speaker']:
+            index += 1
+            current_speaker = data['speaker']
+            neo_new_dict_second[index] = data
+    
+    neo_new_dict_second_list = [
+        {'group': el['group'],
+         'speaker': el['speaker'],
+         'index': i} 
+        for i, el in neo_new_dict_second.items()]
+    neo_new_dict_second_list = sorted(neo_new_dict_second_list, key=lambda key: key['speaker'])
+    return neo_new_dict_second_list
+
+def add_speaker_index(data_list):
+    
+    index = 0
+    current_speaker = -1
+    for neo_dict_second in data_list:
+        if current_speaker == -1:
+            neo_dict_second['speaker_index'] = index
+            current_speaker = neo_dict_second['speaker']
+        elif current_speaker == neo_dict_second['speaker']:
+            index += 1
+            neo_dict_second['speaker_index'] = index
+        elif current_speaker != neo_dict_second['speaker']:
+            index = 0
+            neo_dict_second['speaker_index'] = index
+            current_speaker = neo_dict_second['speaker']
+    
+    neo_new_dict_second_list = sorted(data_list, key=lambda key: key['index'])
+    return neo_new_dict_second_list
+        
+def generate_sound_index_list(data_list):
+    
     neo_new_dict = [
-        {'group': [i for i in range(el['group'][0],el['group'][1]+1)] , 
-         'speaker_index':el['index'], 
+        {'group': [i for i in range(el['group'][0],el['group'][len(el['group'])-1]+2)] , 
+         'speaker_index':el['speaker_index'], 
          'index': index,
          'speaker':el['speaker'],
-         'len':el['group'][1] - el['group'][0]}
-         for index, el in enumerate(neo_new_dict)]
+         'len':el['group'][len(el['group'])-1] - el['group'][0]}
+         for index, el in enumerate(data_list)]
     #neo_new_dict = [el for el in neo_new_dict if el['len']>=2]
     return neo_new_dict
+
+"""
+def get_speaker_wav_path_dict(speaker_wav_dict_list, wav_fpaths):
+    speaker_wav_path_dict = {}
+    for speaker_wav_dict in speaker_wav_dict_list:
+        print(speaker_wav_dict)
+        for speaker, wav_list in speaker_wav_dict.items():
+            speaker_wav_path_dict[speaker] = [ wav_fpaths[i] for i in wav_list ]
+    return speaker_wav_path_dict
+"""
 
 def get_speaker_wav_path_dict(speaker_wav_dict_list, wav_fpaths):
     speaker_wav_path_dict = {}
     for speaker_wav_dict in speaker_wav_dict_list:
+        print(speaker_wav_dict['speaker'])
         file_name = f"{('00'+str(speaker_wav_dict['index']))[-3:]}-"\
                     f"{('0'+str(speaker_wav_dict['speaker']))[-2:]}-"\
                     f"{('00'+str(speaker_wav_dict['speaker_index']))[-3:]}"
+        print(len(wav_fpaths))
+        print(speaker_wav_dict['group'][-1])
+        if len(wav_fpaths) == speaker_wav_dict['group'][-1]:
+            speaker_wav_dict['group'] = speaker_wav_dict['group'][:-1]
         speaker_wav_path_dict[file_name] = [ wav_fpaths[i] for i in speaker_wav_dict['group'] ]
     return speaker_wav_path_dict
+        
 
-def merge_and_save_sound(audio_dir, speaker_wav_path_dict):
+def merge_and_save_sound(speaker_wav_path_dict):
     
     merge_sound = AudioSegment.empty()
     for speaker, sound_list in speaker_wav_path_dict.items():
-        print(speaker)
         for sound in sound_list:
             print(type(sound))
             merge_sound += sound
-        merge_sound.export(f"{OUTPUT_DIR}{audio_dir}{speaker}.mp3", format="mp3")
+        merge_sound.export(f"audio_data/merge_audio/exp/{speaker}.wav", format="wav")
         merge_sound = AudioSegment.empty()
+
 
 '-------------------------------------------------------------------------------------------------'
 
@@ -252,6 +367,11 @@ for root, dirs, files in os.walk(INPUT_DIR):
         plt.title('Estimated number of clusters: %d' % n_clusters_)
         plt.savefig(f"{PLOT}{audio_dir}plot_2.png")
 
-        file_list = separate_continuous(file_list_set)
-        speaker_wav_path_dict = get_speaker_wav_path_dict(file_list, sound_list)
-        merge_and_save_sound(audio_dir, speaker_wav_path_dict)
+        each_continuous_sound_list = separate_continuous_sound(file_list_set)
+        consolidated_continuous_speaker_list = consolidate_continuous_speaker(each_continuous_sound_list)
+        consolidated_continuous_speaker_list_with_speaker_index = add_speaker_index(consolidated_continuous_speaker_list)
+        sound_index_list = generate_sound_index_list(consolidated_continuous_speaker_list_with_speaker_index)
+        for index in sound_index_list:
+            print(index)
+        speaker_wav_path_dict = get_speaker_wav_path_dict(sound_index_list, sound_list)
+        merge_and_save_sound(speaker_wav_path_dict)
