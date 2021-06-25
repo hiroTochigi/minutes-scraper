@@ -280,7 +280,7 @@ def merge_and_save_sound(audio_dir, speaker_wav_path_dict):
         for sound in sound_list:
             print(type(sound))
             merge_sound += sound
-        merge_sound.export(f"{OUTPUT_DIR}{audio_dir}{speaker}.mp3", format="mp3")
+        merge_sound.export(f"{OUTPUT_DIR}{audio_dir}{speaker}.wav", format="wav")
         merge_sound = AudioSegment.empty()
 
 
