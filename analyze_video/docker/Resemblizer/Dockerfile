@@ -1,0 +1,18 @@
+FROM python:3.9-buster
+
+RUN apt-get update && apt-get install -y \
+    libsndfile1 \
+    ffmpeg
+
+RUN pip install \
+    librosa==0.8.0 \
+    matplotlib==3.4.1 \
+    matplotlib-inline==0.1.2 \
+    numpy==1.20.2 \
+    pydub==0.25.1 \
+    scikit-image==0.18.1 \
+    scikit-learn==0.24.2 \
+    umap-learn==0.5.1 \
+    SoundFile==0.10.3.post1 \
+    resemblyzer==0.1.1.dev0 \
+    mutagen
