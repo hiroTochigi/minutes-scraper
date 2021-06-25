@@ -272,16 +272,18 @@ def get_speaker_wav_path_dict(speaker_wav_dict_list, wav_fpaths):
         speaker_wav_path_dict[file_name] = [ wav_fpaths[i] for i in speaker_wav_dict['group'] ]
     return speaker_wav_path_dict
         
-
-def merge_and_save_sound(speaker_wav_path_dict):
+def merge_and_save_sound(audio_dir, speaker_wav_path_dict):
     
     merge_sound = AudioSegment.empty()
     for speaker, sound_list in speaker_wav_path_dict.items():
+        print(speaker)
         for sound in sound_list:
             print(type(sound))
             merge_sound += sound
-        merge_sound.export(f"audio_data/merge_audio/exp/{speaker}.wav", format="wav")
+        merge_sound.export(f"{OUTPUT_DIR}{audio_dir}{speaker}.mp3", format="mp3")
         merge_sound = AudioSegment.empty()
+
+
 
 
 '-------------------------------------------------------------------------------------------------'
@@ -374,4 +376,4 @@ for root, dirs, files in os.walk(INPUT_DIR):
         for index in sound_index_list:
             print(index)
         speaker_wav_path_dict = get_speaker_wav_path_dict(sound_index_list, sound_list)
-        merge_and_save_sound(speaker_wav_path_dict)
+        merge_and_save_sound(audio_dir, speaker_wav_path_dict)
