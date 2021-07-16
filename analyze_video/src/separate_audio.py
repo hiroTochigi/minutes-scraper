@@ -313,6 +313,15 @@ def get_utterance_embeds(wavs):
     utterance_embeds = np.array(list(map(encoder.embed_utterance, wavs)))
     return utterance_embeds
 
+def create_pipeline(list_functions):
+
+    def pipeline(input):
+        res = input
+        for function in list_functions:
+            res = function(res)
+        return res
+    return pipeline
+
 for root, dirs, files in os.walk(INPUT_DIR):
     for audio_file in files:
         audio_dir = f"{audio_file.split('.')[0]}/"
@@ -369,10 +378,15 @@ for root, dirs, files in os.walk(INPUT_DIR):
         plt.title('Estimated number of clusters: %d' % n_clusters_)
         plt.savefig(f"{PLOT}{audio_dir}plot_2.png")
 
-        each_continuous_sound_list = separate_continuous_sound(file_list_set)
-        consolidated_continuous_speaker_list = consolidate_continuous_speaker(each_continuous_sound_list)
-        consolidated_continuous_speaker_list_with_speaker_index = add_speaker_index(consolidated_continuous_speaker_list)
-        sound_index_list = generate_sound_index_list(consolidated_continuous_speaker_list_with_speaker_index)
+        pipeline = create_pipeline([
+            separate_continuous_sound,
+            consolidate_continuous_speaker,
+            add_speaker_index,
+            generate_sound_index_list,
+        ])
+
+        sound_index_list = pipeline(file_list_set)
+
         for index in sound_index_list:
             print(index)
         speaker_wav_path_dict = get_speaker_wav_path_dict(sound_index_list, sound_list)

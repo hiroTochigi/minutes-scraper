@@ -17,5 +17,9 @@ audio/
 video/
 transcript/
 model/
+models/
+
+deepspeech.pytorch/
+outputs/
 
 !street_list.json
