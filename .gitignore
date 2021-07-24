@@ -2,6 +2,7 @@ Pipfile
 Pipfile.lock
 *.pdf
 *.json
+*.txt
 each_public_comment_pdf/
 get_public_comment_improve.log
 
@@ -17,5 +18,10 @@ audio/
 video/
 transcript/
 model/
+models/
+
+deepspeech.pytorch/
+outputs/
 
 !street_list.json
+!requirement.txt
