@@ -34,11 +34,14 @@ def get_category_with_frequency(key_word_list):
     return category_list
 
 
-for root, dirs, files in os.walk(".", topdown=False):
-    if len(root) > 2 and root.find("2464_480")>0:
+for root, dirs, files in os.walk("../transcript", topdown=False):
+    #if len(root) > 2 and root.find("cambridgema")>0:
+    if len(root) > 2 :
         file_list = [name for name in files if name.find(".txt")>0]
         file_list = sorted(file_list)
         analyzed_result_dict = {}
+        result_name = root.split('/')[-1] + '.json'
+        print(result_name)
         for name in file_list:
             with open(f"{root}/{name}") as r:
                 keyword_list = keyword.get_keyword_list(r.read())
@@ -54,6 +57,6 @@ for root, dirs, files in os.walk(".", topdown=False):
         pp.pprint(analyzed_result_dict)
         data = json.dumps(analyzed_result_dict)
 
-        with open("result.json", "w") as w:
+        result_name = os.path.join('result', root.split('/')[-1] + '.json')
+        with open(result_name, "w") as w:
             w.write(data)
-                

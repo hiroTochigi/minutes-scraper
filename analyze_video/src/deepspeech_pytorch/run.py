@@ -27,7 +27,7 @@ def hydra_main(cfg: TranscribeConfig):
         audio_path_list = [ os.path.join(root, audio_path) for audio_path in relative_audio_path_list ]
         transcript_dir = make_dir_if_not_exist(root)
         for audio_path in audio_path_list:
-            output_path = os.path.join(transcript_dir, f"{audio_path.split('/')[-1].split('.')[0]}.txt"
+            output_path = os.path.join(transcript_dir, f"{audio_path.split('/')[-1].split('.')[0]}.txt")
             print(f"transcript {audio_path}")
             cfg.audio_path=audio_path
             cfg.model.model_path="models/deepspeech.pytorch/librispeech_pretrained_v3.ckpt"
