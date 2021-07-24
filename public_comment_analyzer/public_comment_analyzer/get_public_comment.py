@@ -125,7 +125,12 @@ def transform_comment_data_set(comment_data_set):
         
         if comment_data['analyze']:
             print(f"Analyze {comment_data['public_comment_path_pdf']}")
-            text_comments = get_sentence_list.get_sentence_list(process.get_word_block(tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])))
+            text_comments = get_sentence_list.get_sentence_list(
+                process.get_word_block(
+                        tdfp.convert_pdf_to_xml(comment_data['public_comment_path_pdf'])
+                    )
+                )
+
             comment_data['keyword_list'] = {}
             comment_data['address'] = []
             if text_comments and not bogus.is_bogus_text(text_comments):
@@ -287,7 +292,10 @@ def main():
                             comment_data_set[index] = {
                                 'comment_number': None,
                                 'summary': word['word'],
-                                'page_list': get_page_list(page_data, f'{communication_number}\.{index}\.[a-z]'),
+                                'page_list': get_page_list(
+                                        page_data,
+                                        f'{communication_number}\.{index}\.[a-z]'
+                                    ),
                                 'public_comment_path': '',
                                 'public_comment_path_pdf': '',
                                 'date': date,
@@ -304,8 +312,10 @@ def main():
                                     comment_data_set[index]['date']
                                 ):
                                 comment_data_set[index]['summary'] = comment_data_set[index]['summary'].strip()
-                                comment_data_set[index]['public_comment_path_pdf'] = f'{PDF_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.pdf'
-                                comment_data_set[index]['public_comment_path'] = f'{TEXT_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.txt'
+                                comment_data_set[index]['public_comment_path_pdf'] = (
+                                    f'{PDF_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.pdf')
+                                comment_data_set[index]['public_comment_path'] = (
+                                    f'{TEXT_PUBLIC_COMMENT}/{comment_data_set[index]["comment_number"].strip()}.txt')
                             else:
                                 del comment_data_set[index]
                             index = ''
